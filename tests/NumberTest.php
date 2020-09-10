@@ -5,7 +5,7 @@ namespace Madebybob\Number\Tests;
 use Madebybob\Number\Number;
 use PHPUnit\Framework\TestCase;
 
-class NumberTests extends TestCase
+class NumberTest extends TestCase
 {
     /** @test */
     public function true_is_true()
