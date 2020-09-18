@@ -87,7 +87,7 @@ class Number
      */
     public function isPositive(): bool
     {
-        return bccomp($this->value, "0") === 1;
+        return bccomp($this->value, '0') === 1;
     }
 
     /**
@@ -95,7 +95,7 @@ class Number
      */
     public function isNegative(): bool
     {
-        return bccomp($this->value, "0") === -1;
+        return bccomp($this->value, '0') === -1;
     }
 
     /**
@@ -103,7 +103,7 @@ class Number
      */
     public function isZero(): bool
     {
-        return bccomp($this->value, "0") === 0;
+        return bccomp($this->value, '0') === 0;
     }
 
     /**
@@ -113,6 +113,6 @@ class Number
      */
     public function toString($scale = 4): string
     {
-        return bcadd("0.000", $this->value, $scale);
+        return bcadd('0.000', $this->value, $scale);
     }
 }
