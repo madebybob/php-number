@@ -6,20 +6,9 @@ namespace Madebybob\Number;
 
 class Number
 {
-    /**
-     * @var string
-     */
-    private $originalValue = null;
-
-    /**
-     * @var string
-     */
-    private $value = null;
-
-    /**
-     * @var Formatter
-     */
-    private $formatter = null;
+    private ?string $originalValue = null;
+    private ?string $value = null;
+    private ?Formatter $formatter = null;
 
     public function __construct($value = null)
     {
