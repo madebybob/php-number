@@ -5,16 +5,20 @@ declare(strict_types=1);
 namespace Madebybob\Number;
 
 use Madebybob\Number\Formatter\Formatter;
+use Madebybob\Number\Formatter\FormatterInterface;
 
 class Number
 {
     private ?string $originalValue = null;
     private ?string $value = null;
-    private ?Formatter $formatter = null;
+    private FormatterInterface $formatter;
 
-    public function __construct($value = null)
+    public function __construct($value = null, ?FormatterInterface $formatter = null)
     {
-        $this->formatter = new Formatter();
+        if (!$formatter) {
+            $formatter = new Formatter();
+        }
+        $this->formatter = $formatter;
 
         if ($value) {
             $this->originalValue = (string) $value;
