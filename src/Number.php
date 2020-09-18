@@ -15,7 +15,7 @@ class Number
 
     public function __construct($value, ?FormatterInterface $formatter = null)
     {
-        if (!$formatter) {
+        if (! $formatter) {
             $formatter = new Formatter();
         }
         $this->formatter = $formatter;
