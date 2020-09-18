@@ -36,9 +36,8 @@ class Number
      *
      * @param Number|string $value
      * @param int $scale default 4
-     * @return Number
      */
-    public function add($value, $scale = 4)
+    public function add($value, $scale = 4): self
     {
         if (is_string($value)) {
             $value = new Number($value);
@@ -54,9 +53,8 @@ class Number
      *
      * @param Number|string $value
      * @param int $scale default 4
-     * @return Number
      */
-    public function subtract($value, $scale = 4)
+    public function subtract($value, $scale = 4): self
     {
         if (is_string($value)) {
             $value = new Number($value);
@@ -72,9 +70,8 @@ class Number
      *
      * @param Number|string $value
      * @param int $scale default 4
-     * @return Number
      */
-    public function sub($value, $scale = 4)
+    public function sub($value, $scale = 4): self
     {
         return $this->subtract($value, $scale);
     }
@@ -84,38 +81,32 @@ class Number
      *
      * @param Number|string $value
      * @param int $scale default 4
-     * @return Number
      */
-    public function minus($value, $scale = 4)
+    public function minus($value, $scale = 4): self
     {
         return $this->subtract($value, $scale);
     }
 
     /**
      * Return boolean if the current value is a positive number.
-     *
-     * @return bool
      */
-    public function isPositive()
+    public function isPositive(): bool
     {
         return bccomp($this->value, "0") === 1;
     }
 
     /**
      * Return boolean if the current value is a positive number.
-     *
-     * @return bool
      */
-    public function isNegative()
+    public function isNegative(): bool
     {
         return bccomp($this->value, "0") === -1;
     }
 
     /**
      * Returns boolean if the current value is zero "0".
-     * @return bool
      */
-    public function isZero()
+    public function isZero(): bool
     {
         return bccomp($this->value, "0") === 0;
     }
@@ -124,9 +115,8 @@ class Number
      * Converts the current Number instance into a string.
      *
      * @param int $scale default 4
-     * @return string
      */
-    public function toString($scale = 4)
+    public function toString($scale = 4): string
     {
         return bcadd("0.000", $this->value, $scale);
     }
