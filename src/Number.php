@@ -9,21 +9,19 @@ use Madebybob\Number\Formatter\FormatterInterface;
 
 class Number
 {
-    private ?string $originalValue = null;
-    private ?string $value = null;
+    private string $originalValue;
+    private string $value;
     private FormatterInterface $formatter;
 
-    public function __construct($value = null, ?FormatterInterface $formatter = null)
+    public function __construct($value, ?FormatterInterface $formatter = null)
     {
         if (!$formatter) {
             $formatter = new Formatter();
         }
         $this->formatter = $formatter;
 
-        if ($value) {
-            $this->originalValue = (string) $value;
-            $this->value = (string) $value;
-        }
+        $this->originalValue = (string) $value;
+        $this->value = (string) $value;
     }
 
     /**
