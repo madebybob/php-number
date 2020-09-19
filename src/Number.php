@@ -99,7 +99,7 @@ class Number
      */
     public function isZero(): bool
     {
-        return bccomp($this->value, '0') === 0;
+        return bccomp($this->value, '0', 20) === 0;
     }
 
     /**

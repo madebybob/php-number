@@ -135,6 +135,7 @@ class NumberTest extends TestCase
         $this->assertFalse((new Number('200'))->isZero());
         $this->assertFalse((new Number('-1'))->isZero());
         $this->assertFalse((new Number('1'))->isZero());
+        $this->assertFalse((new Number('0.000000085'))->isZero());
     }
 
     public function testCanTraceByParent(): void
