@@ -48,6 +48,28 @@ class NumberTest extends TestCase
         $this->assertTrue($result->isPositive());
     }
 
+    public function testCanAddFloatAsImmutable()
+    {
+        $number = new Number('200');
+        $result = $number->add(400.5);
+
+        $this->assertInstanceOf(Number::class, $result);
+        $this->assertEquals('200.0000', $number->toString());
+        $this->assertEquals('600.5000', $result->toString());
+        $this->assertTrue($result->isPositive());
+    }
+
+    public function testCanAddIntegerAsImmutable()
+    {
+        $number = new Number('200');
+        $result = $number->add(400);
+
+        $this->assertInstanceOf(Number::class, $result);
+        $this->assertEquals('200.0000', $number->toString());
+        $this->assertEquals('600.0000', $result->toString());
+        $this->assertTrue($result->isPositive());
+    }
+
     public function testCanAddNumberAsImmutable()
     {
         $number = new Number('200');

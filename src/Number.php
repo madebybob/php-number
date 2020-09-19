@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Madebybob\Number;
 
+use Madebybob\Number\Exception\InvalidNumberInputException;
 use Madebybob\Number\Formatter\Formatter;
 use Madebybob\Number\Formatter\FormatterInterface;
 
@@ -27,16 +28,14 @@ class Number
     /**
      * Adds the given value to the current number.
      *
-     * @param Number|string $value
+     * @param Number|string|float|int $value
      * @param int $scale default 4
      */
     public function add($value, $scale = 4): self
     {
-        if (is_string($value)) {
-            $value = new Number($value);
-        }
+        $number = $this->getNumber($value);
 
-        $sum = bcadd($this->value, $value->toString(), $scale);
+        $sum = bcadd($this->value, $number->toString(), $scale);
 
         return new Number($sum);
     }
@@ -44,16 +43,14 @@ class Number
     /**
      * Subtracts the given value from the current number.
      *
-     * @param Number|string $value
+     * @param Number|string|float|int $value
      * @param int $scale default 4
      */
     public function subtract($value, $scale = 4): self
     {
-        if (is_string($value)) {
-            $value = new Number($value);
-        }
+        $number = $this->getNumber($value);
 
-        $sum = bcsub($this->value, $value->toString(), $scale);
+        $sum = bcsub($this->value, $number->toString(), $scale);
 
         return new Number($sum);
     }
@@ -61,7 +58,7 @@ class Number
     /**
      * Alias for subtract method.
      *
-     * @param Number|string $value
+     * @param Number|string|float|int $value
      * @param int $scale default 4
      */
     public function sub($value, $scale = 4): self
@@ -72,7 +69,7 @@ class Number
     /**
      * Alias for subtract method.
      *
-     * @param Number|string $value
+     * @param Number|string|float|int $value
      * @param int $scale default 4
      */
     public function minus($value, $scale = 4): self
@@ -112,5 +109,22 @@ class Number
     public function toString($scale = 4): string
     {
         return bcadd('0.000', $this->value, $scale);
+    }
+
+    /**
+     * @internal
+     * @param Number|string|float|int $value
+     */
+    private function getNumber($value): self
+    {
+        if ($value instanceof self) {
+            return $value;
+        }
+
+        if (is_string($value) || is_float($value) || is_int($value)) {
+            return new self($value);
+        }
+
+        throw new InvalidNumberInputException();
     }
 }
