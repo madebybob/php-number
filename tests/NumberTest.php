@@ -8,12 +8,12 @@ use PHPUnit\Framework\TestCase;
 class NumberTest extends TestCase
 {
     /** @test */
-    public function true_is_true()
+    public function true_is_true(): void
     {
         $this->assertTrue(true);
     }
 
-    public function testCanInitializeFromString()
+    public function testCanInitializeFromString(): void
     {
         $number = new Number('200');
 
@@ -22,7 +22,7 @@ class NumberTest extends TestCase
         $this->assertEquals('200', $number->toString(0));
     }
 
-    public function testCanInitializeFromInteger()
+    public function testCanInitializeFromInteger(): void
     {
         $number = new Number(200);
 
@@ -37,7 +37,7 @@ class NumberTest extends TestCase
         $this->assertEquals('-200', $number->toString(0));
     }
 
-    public function testCanAddStringAsImmutable()
+    public function testCanAddStringAsImmutable(): void
     {
         $number = new Number('200');
         $result = $number->add('400');
@@ -48,7 +48,7 @@ class NumberTest extends TestCase
         $this->assertTrue($result->isPositive());
     }
 
-    public function testCanAddFloatAsImmutable()
+    public function testCanAddFloatAsImmutable(): void
     {
         $number = new Number('200');
         $result = $number->add(400.5);
@@ -59,7 +59,7 @@ class NumberTest extends TestCase
         $this->assertTrue($result->isPositive());
     }
 
-    public function testCanAddIntegerAsImmutable()
+    public function testCanAddIntegerAsImmutable(): void
     {
         $number = new Number('200');
         $result = $number->add(400);
@@ -70,7 +70,7 @@ class NumberTest extends TestCase
         $this->assertTrue($result->isPositive());
     }
 
-    public function testCanAddNumberAsImmutable()
+    public function testCanAddNumberAsImmutable(): void
     {
         $number = new Number('200');
         $result = $number->add(new Number('400'));
@@ -81,7 +81,7 @@ class NumberTest extends TestCase
         $this->assertTrue($result->isPositive());
     }
 
-    public function testCanSubtractNumberAsImmutable()
+    public function testCanSubtractNumberAsImmutable(): void
     {
         $number = new Number('200');
         $result = $number->subtract(new Number('50'));
@@ -107,7 +107,7 @@ class NumberTest extends TestCase
         $this->assertEquals('150.0000', $result->toString());
     }
 
-    public function testIsPositive()
+    public function testIsPositive(): void
     {
         $this->assertTrue((new Number('200'))->isPositive());
         $this->assertTrue((new Number('1'))->isPositive());
@@ -117,7 +117,7 @@ class NumberTest extends TestCase
         $this->assertFalse((new Number('0'))->isNegative());
     }
 
-    public function testIsNegative()
+    public function testIsNegative(): void
     {
         $this->assertTrue((new Number('-200'))->isNegative());
         $this->assertTrue((new Number('-1'))->isNegative());
@@ -126,7 +126,7 @@ class NumberTest extends TestCase
         $this->assertFalse((new Number('-1'))->isPositive());
     }
 
-    public function testIsZero()
+    public function testIsZero(): void
     {
         $this->assertTrue((new Number('-0'))->isZero());
         $this->assertTrue((new Number('0'))->isZero());
@@ -137,7 +137,7 @@ class NumberTest extends TestCase
         $this->assertFalse((new Number('1'))->isZero());
     }
 
-    public function testCanTraceByParent()
+    public function testCanTraceByParent(): void
     {
         $five = new Number(5);
         $seven = $five->add(2);
