@@ -190,10 +190,17 @@ class NumberTest extends TestCase
 
     public function testCanInitializeMoney(): void
     {
+        // Instance initialized by constructor.
         $five = new Money(5, 'EUR');
         $this->assertEquals($five->toString(), '5.0000');
 
+        // Instance initialized by init().
         $seven = $five->add(2);
         $this->assertEquals($seven->toString(), '7.0000');
+
+        $this->assertEquals($five->isoCode(), 'EUR');
+        $this->assertEquals($seven->isoCode(), 'EUR');
+
+        $this->assertEquals($seven->parent(), $five);
     }
 }
