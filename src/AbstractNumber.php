@@ -113,6 +113,14 @@ abstract class AbstractNumber implements NumberInterface
     }
 
     /**
+     * Formats the number using the Formatter.
+     */
+    public function format(): string
+    {
+        return $this->formatter()->format($this);
+    }
+
+    /**
      * @internal
      * @param Number|string|float|int $value
      */
