@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Madebybob\Number;
 
-use Madebybob\Number\Exception\InvalidNumberInputException;
+use Madebybob\Number\Exception\InvalidNumberInputTypeException;
 use Madebybob\Number\Formatter\Formatter;
 use Madebybob\Number\Formatter\FormatterInterface;
 
@@ -134,6 +134,6 @@ class Number
             return new self($value);
         }
 
-        throw new InvalidNumberInputException();
+        throw new InvalidNumberInputTypeException($value);
     }
 }

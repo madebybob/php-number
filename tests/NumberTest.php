@@ -2,6 +2,7 @@
 
 namespace Madebybob\Number\Tests;
 
+use Madebybob\Number\Exception\InvalidNumberInputTypeException;
 use Madebybob\Number\Number;
 use PHPUnit\Framework\TestCase;
 
@@ -79,6 +80,38 @@ class NumberTest extends TestCase
         $this->assertEquals('200.0000', $number->toString());
         $this->assertEquals('600.0000', $result->toString());
         $this->assertTrue($result->isPositive());
+    }
+
+    public function testCannotAddArray(): void
+    {
+        $number = new Number('200');
+
+        $this->expectException(InvalidNumberInputTypeException::class);
+        $number->add([]);
+    }
+
+    public function testCannotAddObject(): void
+    {
+        $number = new Number('200');
+
+        $this->expectException(InvalidNumberInputTypeException::class);
+        $number->add(new \stdClass());
+    }
+
+    public function testCannotAddBoolean(): void
+    {
+        $number = new Number('200');
+
+        $this->expectException(InvalidNumberInputTypeException::class);
+        $number->add(true);
+    }
+
+    public function testCannotAddNull(): void
+    {
+        $number = new Number('200');
+
+        $this->expectException(InvalidNumberInputTypeException::class);
+        $number->add(null);
     }
 
     public function testCanSubtractNumberAsImmutable(): void
