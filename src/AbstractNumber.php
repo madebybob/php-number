@@ -131,7 +131,7 @@ abstract class AbstractNumber implements NumberInterface
         }
 
         if (is_string($value) || is_float($value) || is_int($value)) {
-            return $this->init((string) $value);
+            return $this->init((string) $value, false);
         }
 
         throw new InvalidNumberInputTypeException($value);
