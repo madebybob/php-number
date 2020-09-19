@@ -121,7 +121,7 @@ abstract class AbstractNumber implements NumberInterface
     }
 
     /**
-     * @internal
+     * @internal Provides an instance of Number based on the input. Supports multiple input data types.
      * @param Number|string|float|int $value
      */
     private function getNumberFromInput($value): self
