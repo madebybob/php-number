@@ -8,6 +8,9 @@ use Madebybob\Number\Exception\InvalidNumberInputTypeException;
 
 abstract class AbstractNumber implements NumberInterface
 {
+    private const INTERNAL_SCALE = 12;
+    private const DEFAULT_SCALE = 4;
+
     private string $value;
     private ?self $parent;
 
@@ -22,11 +25,11 @@ abstract class AbstractNumber implements NumberInterface
      * Adds the given value to the current number.
      *
      * @param Number|string|float|int $value
-     * @param int $scale default 4
      */
-    public function add($value, $scale = 4): self
+    public function add($value, int $scale = null): self
     {
         $number = $this->getNumberFromInput($value);
+        $scale = $scale ?: self::INTERNAL_SCALE;
 
         $sum = bcadd($this->value, $number->toString(), $scale);
 
@@ -37,11 +40,11 @@ abstract class AbstractNumber implements NumberInterface
      * Subtracts the given value from the current number.
      *
      * @param Number|string|float|int $value
-     * @param int $scale default 4
      */
-    public function subtract($value, $scale = 4): self
+    public function subtract($value, int $scale = null): self
     {
         $number = $this->getNumberFromInput($value);
+        $scale = $scale ?: self::INTERNAL_SCALE;
 
         $sum = bcsub($this->value, $number->toString(), $scale);
 
@@ -52,9 +55,8 @@ abstract class AbstractNumber implements NumberInterface
      * Alias for subtract method.
      *
      * @param Number|string|float|int $value
-     * @param int $scale default 4
      */
-    public function sub($value, $scale = 4): self
+    public function sub($value, int $scale = null): self
     {
         return $this->subtract($value, $scale);
     }
@@ -63,9 +65,8 @@ abstract class AbstractNumber implements NumberInterface
      * Alias for subtract method.
      *
      * @param Number|string|float|int $value
-     * @param int $scale default 4
      */
-    public function minus($value, $scale = 4): self
+    public function minus($value, int $scale = 4): self
     {
         return $this->subtract($value, $scale);
     }
@@ -112,12 +113,12 @@ abstract class AbstractNumber implements NumberInterface
 
     /**
      * Converts the current Number instance into a string.
-     *
-     * @param int $scale default 4
      */
-    public function toString($scale = 4): string
+    public function toString(int $scale = null): string
     {
-        return bcadd('0.000', $this->value, $scale);
+        $scale = $scale ?: self::DEFAULT_SCALE;
+
+        return bcadd('0.0000', $this->value, $scale);
     }
 
     /**
