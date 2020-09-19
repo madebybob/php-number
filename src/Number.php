@@ -33,7 +33,7 @@ class Number
      */
     public function add($value, $scale = 4): self
     {
-        $number = $this->getNumber($value);
+        $number = $this->getNumberFromValue($value);
 
         $sum = bcadd($this->value, $number->toString(), $scale);
 
@@ -48,7 +48,7 @@ class Number
      */
     public function subtract($value, $scale = 4): self
     {
-        $number = $this->getNumber($value);
+        $number = $this->getNumberFromValue($value);
 
         $sum = bcsub($this->value, $number->toString(), $scale);
 
@@ -115,7 +115,7 @@ class Number
      * @internal
      * @param Number|string|float|int $value
      */
-    private function getNumber($value): self
+    private function getNumberFromValue($value): self
     {
         if ($value instanceof self) {
             return $value;
