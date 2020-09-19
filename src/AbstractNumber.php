@@ -92,7 +92,7 @@ abstract class AbstractNumber implements NumberInterface
      */
     public function isZero(): bool
     {
-        return bccomp($this->value, '0', 20) === 0;
+        return bccomp($this->value, '0', self::INTERNAL_SCALE) === 0;
     }
 
     /**
