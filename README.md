@@ -93,6 +93,11 @@ if ($result->isPositive()) {
 composer test
 ```
 
+## Php CS Fixer
+````
+./vendor/bin/php-cs-fixer fix
+````
+
 ## Wishlist
 
 There is a lot to do since this project is experimental. Feel free to make suggestions through a Github Issue or push your own contribution via a Pull Request. Don't be afraid you'll break anything; we got you covered by tests :)
