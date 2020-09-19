@@ -9,6 +9,11 @@ use Madebybob\Number\Formatter\NumberFormatter;
 
 class Number extends AbstractNumber
 {
+    public function init(string $value): self
+    {
+        return new self($value, $this);
+    }
+
     public function formatter(): FormatterInterface
     {
         return new NumberFormatter();

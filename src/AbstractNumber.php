@@ -30,7 +30,7 @@ abstract class AbstractNumber implements NumberInterface
 
         $sum = bcadd($this->value, $number->toString(), $scale);
 
-        return new static($sum, $this);
+        return $this->init($sum);
     }
 
     /**
@@ -45,7 +45,7 @@ abstract class AbstractNumber implements NumberInterface
 
         $sum = bcsub($this->value, $number->toString(), $scale);
 
-        return new static($sum, $this);
+        return $this->init($sum);
     }
 
     /**
@@ -131,7 +131,7 @@ abstract class AbstractNumber implements NumberInterface
         }
 
         if (is_string($value) || is_float($value) || is_int($value)) {
-            return new static($value);
+            return $this->init((string) $value);
         }
 
         throw new InvalidNumberInputTypeException($value);

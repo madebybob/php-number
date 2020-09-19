@@ -3,6 +3,7 @@
 namespace Madebybob\Number\Tests;
 
 use Madebybob\Number\Exception\InvalidNumberInputTypeException;
+use Madebybob\Number\Money;
 use Madebybob\Number\Number;
 use PHPUnit\Framework\TestCase;
 
@@ -185,5 +186,14 @@ class NumberTest extends TestCase
         $this->assertEquals($fifteen->parent()->toString(), '7.0000');
         $this->assertEquals($fifteen->parent()->parent()->toString(), '5.0000');
         $this->assertNull($five->parent());
+    }
+
+    public function testCanInitializeMoney(): void
+    {
+        $five = new Money(5, 'EUR');
+        $this->assertEquals($five->toString(), '5.0000');
+
+        $seven = $five->add(2);
+        $this->assertEquals($seven->toString(), '7.0000');
     }
 }
