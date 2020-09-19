@@ -26,7 +26,7 @@ abstract class AbstractNumber implements NumberInterface
      */
     public function add($value, $scale = 4): self
     {
-        $number = $this->getNumberFromValue($value);
+        $number = $this->getNumberFromInput($value);
 
         $sum = bcadd($this->value, $number->toString(), $scale);
 
@@ -41,7 +41,7 @@ abstract class AbstractNumber implements NumberInterface
      */
     public function subtract($value, $scale = 4): self
     {
-        $number = $this->getNumberFromValue($value);
+        $number = $this->getNumberFromInput($value);
 
         $sum = bcsub($this->value, $number->toString(), $scale);
 
@@ -124,7 +124,7 @@ abstract class AbstractNumber implements NumberInterface
      * @internal
      * @param Number|string|float|int $value
      */
-    private function getNumberFromValue($value): self
+    private function getNumberFromInput($value): self
     {
         if ($value instanceof self) {
             return $value;
