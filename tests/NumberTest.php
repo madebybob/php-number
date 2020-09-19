@@ -136,4 +136,20 @@ class NumberTest extends TestCase
         $this->assertFalse((new Number('-1'))->isZero());
         $this->assertFalse((new Number('1'))->isZero());
     }
+
+    public function testCanTraceByParent()
+    {
+        $five = new Number(5);
+        $seven = $five->add(2);
+        $fifteen = $seven->add(8);
+
+        $this->assertEquals($five->toString(), '5.0000');
+        $this->assertEquals($seven->toString(), '7.0000');
+        $this->assertEquals($fifteen->toString(), '15.0000');
+
+        $this->assertEquals($seven->parent()->toString(), '5.0000');
+        $this->assertEquals($fifteen->parent()->toString(), '7.0000');
+        $this->assertEquals($fifteen->parent()->parent()->toString(), '5.0000');
+        $this->assertNull($five->parent());
+    }
 }

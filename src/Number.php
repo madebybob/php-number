@@ -10,19 +10,20 @@ use Madebybob\Number\Formatter\FormatterInterface;
 
 class Number
 {
-    private string $originalValue;
     private string $value;
     private FormatterInterface $formatter;
+    private ?self $parent;
 
-    public function __construct($value, ?FormatterInterface $formatter = null)
+    public function __construct($value, ?FormatterInterface $formatter = null, ?self $parent = null)
     {
+        $this->value = (string) $value;
+
         if (! $formatter) {
             $formatter = new Formatter();
         }
         $this->formatter = $formatter;
 
-        $this->originalValue = (string) $value;
-        $this->value = (string) $value;
+        $this->parent = $parent;
     }
 
     /**
@@ -37,7 +38,7 @@ class Number
 
         $sum = bcadd($this->value, $number->toString(), $scale);
 
-        return new Number($sum);
+        return new Number($sum, $this->formatter, $this);
     }
 
     /**
@@ -52,7 +53,7 @@ class Number
 
         $sum = bcsub($this->value, $number->toString(), $scale);
 
-        return new Number($sum);
+        return new Number($sum, $this->formatter, $this);
     }
 
     /**
@@ -99,6 +100,14 @@ class Number
     public function isZero(): bool
     {
         return bccomp($this->value, '0') === 0;
+    }
+
+    /**
+     * Returns it's parent by which this instance was initialized.
+     */
+    public function parent(): ?self
+    {
+        return $this->parent;
     }
 
     /**
