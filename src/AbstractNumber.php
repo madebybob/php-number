@@ -29,7 +29,7 @@ abstract class AbstractNumber implements NumberInterface
     public function add($value, int $scale = null): self
     {
         $number = $this->getNumberFromInput($value);
-        $scale = $scale ?: self::INTERNAL_SCALE;
+        $scale = $scale ?? self::INTERNAL_SCALE;
 
         $sum = bcadd($this->value, $number->toString(), $scale);
 
@@ -44,7 +44,7 @@ abstract class AbstractNumber implements NumberInterface
     public function subtract($value, int $scale = null): self
     {
         $number = $this->getNumberFromInput($value);
-        $scale = $scale ?: self::INTERNAL_SCALE;
+        $scale = $scale ?? self::INTERNAL_SCALE;
 
         $sum = bcsub($this->value, $number->toString(), $scale);
 
@@ -116,7 +116,7 @@ abstract class AbstractNumber implements NumberInterface
      */
     public function toString(int $scale = null): string
     {
-        $scale = $scale ?: self::DEFAULT_SCALE;
+        $scale = $scale ?? self::DEFAULT_SCALE;
 
         return bcadd('0.0000', $this->value, $scale);
     }
