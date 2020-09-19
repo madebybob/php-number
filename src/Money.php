@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Madebybob\Number\Formatter;
 
-use Madebybob\Number\Number;
+use Madebybob\Number\AbstractNumber;
 
-class Money extends Number
+class Money extends AbstractNumber
 {
-    public function __construct($value = null)
+    public function formatter(): FormatterInterface
     {
-        parent::__construct($value, new MoneyFormatter());
+        return new MoneyFormatter();
     }
 }
