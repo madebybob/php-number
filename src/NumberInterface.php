@@ -8,6 +8,6 @@ use Madebybob\Number\Formatter\FormatterInterface;
 
 interface NumberInterface
 {
-    public function init(string $value, bool $isParent = true): AbstractNumber;
+    public function init(string $value): AbstractNumber;
     public function formatter(): FormatterInterface;
 }

@@ -9,9 +9,9 @@ use Madebybob\Number\Formatter\NumberFormatter;
 
 class Number extends AbstractNumber
 {
-    public function init(string $value, bool $isParent = true): self
+    public function init(string $value): self
     {
-        return new self($value, $isParent ? $this : null);
+        return new self($value, $this);
     }
 
     public function formatter(): FormatterInterface

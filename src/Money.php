@@ -17,9 +17,9 @@ class Money extends AbstractNumber
         $this->isoCode = $isoCode;
     }
 
-    public function init(string $value, bool $isParent = true): self
+    public function init(string $value): self
     {
-        return new self($value, $this->isoCode, $isParent ? $this : null);
+        return new self($value, $this->isoCode, $this);
     }
 
     public function formatter(): FormatterInterface
