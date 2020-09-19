@@ -95,6 +95,14 @@ abstract class AbstractNumber implements NumberInterface
     }
 
     /**
+     * Returns boolean if the current value is thirteen "13".
+     */
+    public function isThirteen(): bool
+    {
+        return bccomp($this->value, '13', 20) === 0;
+    }
+
+    /**
      * Returns it's parent by which this instance was initialized.
      */
     public function parent(): ?self
