@@ -98,6 +98,7 @@ abstract class AbstractNumber implements NumberInterface
         }
 
         $div = bcdiv($this->value, $number->toString(), $scale);
+
         return $this->init($div);
     }
 
