@@ -181,6 +181,64 @@ class NumberTest extends TestCase
         $this->assertEquals('20.0000', $zero->toString());
     }
 
+    public function testCanMultiplyNumberAsImmutable(): void
+    {
+        $number = new Number('200');
+        $result = $number->multiply(new Number('50'));
+
+        $this->assertInstanceOf(Number::class, $result);
+        $this->assertEquals('200.0000', $number->toString());
+        $this->assertEquals('10000.0000', $result->toString());
+
+        // alias mul
+        $number = new Number('200');
+        $result = $number->mul(new Number('4'));
+
+        $this->assertInstanceOf(Number::class, $result);
+        $this->assertEquals('200.0000', $number->toString());
+        $this->assertEquals('800.0000', $result->toString());
+
+        // alias minus
+        $number = new Number('200');
+        $result = $number->minus(new Number('50'));
+
+        $this->assertInstanceOf(Number::class, $result);
+        $this->assertEquals('200.0000', $number->toString());
+        $this->assertEquals('150.0000', $result->toString());
+    }
+
+    public function testCannotMultiplyArray(): void
+    {
+        $number = new Number('200');
+
+        $this->expectException(InvalidNumberInputTypeException::class);
+        $number->multiply([]);
+    }
+
+    public function testCannotMultiplyObject(): void
+    {
+        $number = new Number('200');
+
+        $this->expectException(InvalidNumberInputTypeException::class);
+        $number->multiply(new \stdClass());
+    }
+
+    public function testCannotMultiplyBoolean(): void
+    {
+        $number = new Number('200');
+
+        $this->expectException(InvalidNumberInputTypeException::class);
+        $number->multiply(true);
+    }
+
+    public function testCannotMultiplyNull(): void
+    {
+        $number = new Number('200');
+
+        $this->expectException(InvalidNumberInputTypeException::class);
+        $number->multiply(null);
+    }
+
     public function testIsPositive(): void
     {
         $this->assertTrue((new Number('200'))->isPositive());

@@ -113,6 +113,31 @@ abstract class AbstractNumber implements NumberInterface
     }
 
     /**
+     * Multiplies the current value by the given number.
+     *
+     * @param Number|string|float|int $value
+     */
+    public function multiply($value, int $scale = null): self
+    {
+        $number = $this->getNumberFromInput($value);
+        $scale = $scale ?? self::INTERNAL_SCALE;
+
+        $mul = bcmul($this->value, $number->toString(), $scale);
+
+        return $this->init($mul);
+    }
+
+    /**
+     * Alias for multiply method.
+     *
+     * @param Number|string|float|int $value
+     */
+    public function mul($value, int $scale = null): self
+    {
+        return $this->multiply($value, $scale);
+    }
+
+    /**
      * Return boolean if the current value is a positive number.
      */
     public function isPositive(): bool
