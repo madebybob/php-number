@@ -328,6 +328,39 @@ class NumberTest extends TestCase
         $this->assertFalse((new Number('0.000000085'))->isZero());
     }
 
+    public function testIsGreaterThan(): void
+    {
+        $five = new Number(5);
+        $this->assertTrue($five->isGreaterThan('3'));
+        $this->assertFalse($five->isGreaterThan('7'));
+
+        $this->assertTrue($five->isGreaterThan('-500'));
+        $this->assertTrue($five->isGreaterThan('4.9999'));
+        $this->assertFalse($five->isGreaterThan('5.0001'));
+    }
+
+    public function testIsLessThan(): void
+    {
+        $five = new Number(5);
+        $this->assertFalse($five->isLessThan('3'));
+        $this->assertTrue($five->isLessThan('7'));
+
+        $this->assertFalse($five->isLessThan('-500'));
+        $this->assertFalse($five->isLessThan('4.9999'));
+        $this->assertTrue($five->isLessThan('5.0001'));
+    }
+
+    public function testIsEqual(): void
+    {
+        $five = new Number(5);
+        $this->assertTrue($five->isEqual('5'));
+        $this->assertTrue($five->isEqual('5.0000'));
+
+        $this->assertFalse($five->isEqual('-5'));
+        $this->assertFalse($five->isEqual('4.9999'));
+        $this->assertFalse($five->isEqual('5.0001'));
+    }
+
     public function testCanTraceByParent(): void
     {
         $five = new Number(5);

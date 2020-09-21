@@ -184,7 +184,7 @@ abstract class AbstractNumber implements NumberInterface
      */
     public function isZero(): bool
     {
-        return bccomp($this->value, '0', self::INTERNAL_SCALE) === 0;
+        return $this->isEqual('0');
     }
 
     /**
@@ -192,7 +192,46 @@ abstract class AbstractNumber implements NumberInterface
      */
     public function isThirteen(): bool
     {
-        return bccomp($this->value, '13', 20) === 0;
+        return $this->isEqual('13');
+    }
+
+    /**
+     * Returns boolean if the current value is greater than the given value.
+     *
+     * @param Number|string|float|int $value
+     */
+    public function isGreaterThan($value, int $scale = null): bool
+    {
+        $number = $this->getNumberFromInput($value);
+        $scale = $scale ?? self::INTERNAL_SCALE;
+
+        return bccomp($this->value, $number->toString(), $scale) === 1;
+    }
+
+    /**
+     * Returns boolean if the current value is less than the given value.
+     *
+     * @param Number|string|float|int $value
+     */
+    public function isLessThan($value, int $scale = null): bool
+    {
+        $number = $this->getNumberFromInput($value);
+        $scale = $scale ?? self::INTERNAL_SCALE;
+
+        return bccomp($this->value, $number->toString(), $scale) === -1;
+    }
+
+    /**
+     * Returns boolean if the current value is equal to the given value.
+     *
+     * @param Number|string|float|int $value
+     */
+    public function isEqual($value, int $scale = null): bool
+    {
+        $number = $this->getNumberFromInput($value);
+        $scale = $scale ?? self::INTERNAL_SCALE;
+
+        return bccomp($this->value, $number->toString(), $scale) === 0;
     }
 
     /**
