@@ -10,6 +10,9 @@ Ahh, after hours of investigation you've found [bcmath](https://www.php.net/manu
 #### The solution
 This library will help you to manage numbers because you can typhint them (`getTotal(Number $quantity)`) and make calculations on the number itself (`$number->sum('200')'`).
 
+## Table of Contents
+
+
 
 ## Installation
 
@@ -53,6 +56,47 @@ use Madebybob\Number\Number;
 $newNumber = $number->subtract('200');
 ```
 
+### Divide
+
+``` php
+use Madebybob\Number\Number;
+
+$newNumber = $number->divide('200');
+```
+
+### Multiply
+
+``` php
+use Madebybob\Number\Number;
+
+$newNumber = $number->multiply('200');
+```
+
+### Modulus
+
+``` php
+use Madebybob\Number\Number;
+
+$newNumber = $number->modulus('200');
+```
+
+### Comparison
+
+``` php
+use Madebybob\Number\Number;
+
+$number = new Number('200');
+
+// check if the number is positive
+$number->isGreaterThan('100');
+
+// check if the number is negative
+$number->isLessThan('300');
+
+// check if the number is zero ("0")
+$number->isEqual('100');
+```
+
 ### State
 
 ``` php
@@ -94,7 +138,7 @@ composer test
 ```
 
 ## Php CS Fixer
-````
+```` bash
 ./vendor/bin/php-cs-fixer fix
 ````
 
@@ -104,7 +148,7 @@ There is a lot to do since this project is experimental. Feel free to make sugge
 
 - [ ] Add `Formatter` class to format every number (like price, weight, et cetera) into a plain Number object
 - [ ] Improve `Formatter` class to format `Number` instance into human readable numbers like price and weight
-- [ ] Implement `bccomp`
+- [x] Implement `bccomp`
 - [x] Implement `bcdiv`
 - [x] Implement `bcmod`
 - [x] Implement `bcmul`
@@ -124,6 +168,7 @@ Please see [CONTRIBUTING](.github/CONTRIBUTING.md) for details.
 ## Credits
 
 - [Bob Mulder](https://github.com/bobmulder)
+- [Jon Mulder](https://github.com/jonmldr)
 - [All Contributors](../../contributors)
 
 ## License
