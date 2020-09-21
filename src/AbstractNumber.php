@@ -66,9 +66,50 @@ abstract class AbstractNumber implements NumberInterface
      *
      * @param Number|string|float|int $value
      */
-    public function minus($value, int $scale = 4): self
+    public function minus($value, int $scale = null): self
     {
         return $this->subtract($value, $scale);
+    }
+
+    /**
+     * Divides the current number by the given value.
+     * A fallback number can be given to make sure you can continue chaining.
+     *
+     * Example:
+     * ```
+     *   $divided = (new Number('200.000'))->divide($value, null, '0.0000')
+     * ```
+     *
+     * @param Number|string|float|int $value
+     * @param Number|string|float|int $fallback
+     */
+    public function divide($value, int $scale = null, $fallback = null): self
+    {
+        $number = $this->getNumberFromInput($value);
+        $fallback = $fallback ? $this->getNumberFromInput($fallback) : false;
+        $scale = $scale ?? self::INTERNAL_SCALE;
+
+        if ($number->isZero()) {
+            if ($fallback) {
+                return $this->init($fallback->toString());
+            } else {
+                throw new InvalidNumberInputTypeException($value);
+            }
+        }
+
+        $div = bcdiv($this->value, $number->toString(), $scale);
+        return $this->init($div);
+    }
+
+    /**
+     * Alias for divide method.
+     *
+     * @param Number|string|float|int $value
+     * @param Number|string|float|int $fallback
+     */
+    public function div($value, int $scale = null, $fallback = null): self
+    {
+        return $this->divide($value, $scale, $fallback);
     }
 
     /**

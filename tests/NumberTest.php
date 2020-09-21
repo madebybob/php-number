@@ -141,6 +141,46 @@ class NumberTest extends TestCase
         $this->assertEquals('150.0000', $result->toString());
     }
 
+    public function testCanDivideNumberAsImmutable()
+    {
+        $number = new Number('200');
+        $result = $number->divide(new Number('5'));
+
+        $this->assertInstanceOf(Number::class, $result);
+        $this->assertEquals('200.0000', $number->toString());
+        $this->assertEquals('40.0000', $result->toString());
+
+        // alias sub
+        $number = new Number('200');
+        $result = $number->div(new Number('4'));
+
+        $this->assertInstanceOf(Number::class, $result);
+        $this->assertEquals('200.0000', $number->toString());
+        $this->assertEquals('50.0000', $result->toString());
+    }
+
+    public function testCanNotDivideNull()
+    {
+        $number = new Number('200');
+
+        $this->expectException(InvalidNumberInputTypeException::class);
+        $number->divide(null);
+
+        $this->expectException(InvalidNumberInputTypeException::class);
+        $number->divide('0.0000');
+    }
+
+    public function testCanNotDivideNullWithFallback()
+    {
+        $number = new Number('200');
+
+        $zero = $number->divide('0.0000', null, '0.0000');
+        $this->assertEquals('0.0000', $zero->toString());
+
+        $zero = $number->divide('0.0000', null, '20.0000');
+        $this->assertEquals('20.0000', $zero->toString());
+    }
+
     public function testIsPositive(): void
     {
         $this->assertTrue((new Number('200'))->isPositive());
