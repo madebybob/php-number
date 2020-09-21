@@ -105,9 +105,9 @@ There is a lot to do since this project is experimental. Feel free to make sugge
 - [ ] Add `Formatter` class to format every number (like price, weight, et cetera) into a plain Number object
 - [ ] Improve `Formatter` class to format `Number` instance into human readable numbers like price and weight
 - [ ] Implement `bccomp`
-- [ ] Implement `bcdiv`
-- [ ] Implement `bcmod`
-- [ ] Implement `bcmul`
+- [x] Implement `bcdiv`
+- [x] Implement `bcmod`
+- [x] Implement `bcmul`
 - [ ] Implement `bcpow`
 - [ ] Implement `bcpowmod`
 - [ ] Implement `bcscale`

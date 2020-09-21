@@ -239,6 +239,64 @@ class NumberTest extends TestCase
         $number->multiply(null);
     }
 
+    public function testCanGetModulusNumberAsImmutable(): void
+    {
+        $number = new Number('50');
+        $result = $number->modulus(new Number('20'));
+
+        $this->assertInstanceOf(Number::class, $result);
+        $this->assertEquals('50.0000', $number->toString());
+        $this->assertEquals('10.0000', $result->toString());
+
+        // big number
+        $number = new Number('50');
+        $result = $number->modulus(new Number('22.5683'));
+
+        $this->assertInstanceOf(Number::class, $result);
+        $this->assertEquals('50.0000', $number->toString());
+        $this->assertEquals('4.8634', $result->toString());
+
+        // alias mod
+        $number = new Number('44');
+        $result = $number->mod(new Number('40'));
+
+        $this->assertInstanceOf(Number::class, $result);
+        $this->assertEquals('44.0000', $number->toString());
+        $this->assertEquals('4.0000', $result->toString());
+    }
+
+    public function testCannotGetModulusArray(): void
+    {
+        $number = new Number('200');
+
+        $this->expectException(InvalidNumberInputTypeException::class);
+        $number->modulus([]);
+    }
+
+    public function testCannotGetModulusObject(): void
+    {
+        $number = new Number('200');
+
+        $this->expectException(InvalidNumberInputTypeException::class);
+        $number->modulus(new \stdClass());
+    }
+
+    public function testCannotGetModulusBoolean(): void
+    {
+        $number = new Number('200');
+
+        $this->expectException(InvalidNumberInputTypeException::class);
+        $number->modulus(true);
+    }
+
+    public function testCannotGetModulusNull(): void
+    {
+        $number = new Number('200');
+
+        $this->expectException(InvalidNumberInputTypeException::class);
+        $number->modulus(null);
+    }
+
     public function testIsPositive(): void
     {
         $this->assertTrue((new Number('200'))->isPositive());

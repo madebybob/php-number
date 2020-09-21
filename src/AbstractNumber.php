@@ -138,6 +138,31 @@ abstract class AbstractNumber implements NumberInterface
     }
 
     /**
+     * Get modulus of the given value based on the current number.
+     *
+     * @param Number|string|float|int $value
+     */
+    public function modulus($value, int $scale = null): self
+    {
+        $number = $this->getNumberFromInput($value);
+        $scale = $scale ?? self::INTERNAL_SCALE;
+
+        $mod = bcmod($this->value, $number->toString(), $scale);
+
+        return $this->init($mod);
+    }
+
+    /**
+     * Alias for modulus method.
+     *
+     * @param Number|string|float|int $value
+     */
+    public function mod($value, int $scale = null): self
+    {
+        return $this->modulus($value, $scale);
+    }
+
+    /**
      * Return boolean if the current value is a positive number.
      */
     public function isPositive(): bool
