@@ -55,6 +55,14 @@ class NumberTest extends TestCase
         $this->assertEquals('-200', $number->toString(0));
     }
 
+    public function testCanInitializeFromNumber(): void
+    {
+        $money = new Money(955, 'EUR');
+        $number = new Number($money);
+
+        $this->assertEquals('955.0000', $number->toString());
+    }
+
     public function testCanAddStringAsImmutable(): void
     {
         $number = new Number('200');
