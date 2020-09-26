@@ -33,11 +33,10 @@ A short overview of what you can do with the class:
 ``` php
 use Madebybob\Number\Number;
 
-// from string
-$number = new Number('200');
-
-// from integer
-$number = new Number(200);
+$number = new Number('200'); // from string
+$number = new Number(200); // from integer
+$number = new Number(200.8); // from float
+$number = new Number(new Money('200', 'EUR')); // from another AbstractNumber instance
 ```
 
 ### Add
@@ -45,7 +44,9 @@ $number = new Number(200);
 ``` php
 use Madebybob\Number\Number;
 
-$newNumber = $number->add('200');
+$newNumber = $number
+    ->add('200')
+    ->plus('200');
 ```
 
 ### Subtract
@@ -53,7 +54,10 @@ $newNumber = $number->add('200');
 ``` php
 use Madebybob\Number\Number;
 
-$newNumber = $number->subtract('200');
+$newNumber = $number
+    ->subtract('200')
+    ->sub('200')
+    ->minus('200');
 ```
 
 ### Divide
@@ -61,7 +65,9 @@ $newNumber = $number->subtract('200');
 ``` php
 use Madebybob\Number\Number;
 
-$newNumber = $number->divide('200');
+$newNumber = $number
+    ->divide('200')
+    ->div('200');
 ```
 
 ### Multiply
@@ -69,7 +75,9 @@ $newNumber = $number->divide('200');
 ``` php
 use Madebybob\Number\Number;
 
-$newNumber = $number->multiply('200');
+$newNumber = $number
+    ->multiply('200')
+    ->mul('200');
 ```
 
 ### Modulus
@@ -77,7 +85,9 @@ $newNumber = $number->multiply('200');
 ``` php
 use Madebybob\Number\Number;
 
-$newNumber = $number->modulus('200');
+$newNumber = $number
+    ->modulus('200')
+    ->mod('200');
 ```
 
 ### Comparison
