@@ -259,6 +259,14 @@ abstract class AbstractNumber implements NumberInterface
     }
 
     /**
+     * Converts the current Number instance into a string.
+     */
+    public function __toString(): string
+    {
+        return $this->toString();
+    }
+
+    /**
      * Formats the number using the Formatter.
      */
     public function format(): string
