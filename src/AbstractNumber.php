@@ -9,11 +9,11 @@ use Madebybob\Number\Exception\InvalidNumberInputTypeException;
 
 abstract class AbstractNumber implements NumberInterface
 {
-    private const INTERNAL_SCALE = 12;
-    private const DEFAULT_SCALE = 4;
+    protected const INTERNAL_SCALE = 12;
+    protected const DEFAULT_SCALE = 4;
 
-    private string $value;
-    private ?self $parent;
+    protected string $value;
+    protected ?self $parent;
 
     /**
      * @param AbstractNumber|string|float|int $value
