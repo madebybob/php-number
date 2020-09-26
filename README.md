@@ -116,21 +116,27 @@ $number->isZero();
 
 ### Immutable & Chaining
 
-Since the `Number` class is immutable and most methods will return a new `Number` instance you will be able to chain your calculations like so:
+Since the `Number` class is immutable, most methods will return a new `Number` instance.
+
+``` php
+$two = new Number(2);
+$four = $two->plus(2);
+
+echo $two->toString(); // $two is still 2
+```
+
+Because the mathematical methods are fluent, you will be able to chain your calculations like so:
 
 ``` php
 $number = new Number('200');
 
 $result = $number
-    ->add(new Number('200'))
-    ->subtract($otherValue)
-    ->add('400');
-
-if ($result->isPositive()) {
-    return $result->toString();
-}
+    ->add(200)
+    ->subtract(109.5)
+    ->mul($two)
+    ->toString();
 ```
- 
+
 ## Testing
 
 ``` bash
