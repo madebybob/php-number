@@ -156,7 +156,7 @@ class NumberTest extends TestCase
         $this->assertEquals('150.0000', $result->toString());
     }
 
-    public function testCanDivideNumberAsImmutable()
+    public function testCanDivideNumberAsImmutable(): void
     {
         $number = new Number('200');
         $result = $number->divide(new Number('5'));
@@ -174,7 +174,7 @@ class NumberTest extends TestCase
         $this->assertEquals('50.0000', $result->toString());
     }
 
-    public function testCanNotDivideNull()
+    public function testCanNotDivideNull(): void
     {
         $number = new Number('200');
 
@@ -185,7 +185,7 @@ class NumberTest extends TestCase
         $number->divide('0.0000');
     }
 
-    public function testCanNotDivideNullWithFallback()
+    public function testCanNotDivideNullWithFallback(): void
     {
         $number = new Number('200');
 
