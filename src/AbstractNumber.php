@@ -14,10 +14,16 @@ abstract class AbstractNumber implements NumberInterface
     private string $value;
     private ?self $parent;
 
+    /**
+     * @param string|float|int $value
+     */
     public function __construct($value, ?self $parent = null)
     {
-        $this->value = (string) $value;
+        if (! is_string($value) && ! is_float($value) && ! is_int($value)) {
+            throw new InvalidNumberInputTypeException($value);
+        }
 
+        $this->value = (string) $value;
         $this->parent = $parent;
     }
 

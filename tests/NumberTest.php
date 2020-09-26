@@ -39,6 +39,21 @@ class NumberTest extends TestCase
         $this->assertEquals('-200', $number->toString(0));
     }
 
+    public function testCanInitializeFromFloat(): void
+    {
+        $number = new Number(200.25);
+
+        $this->assertEquals('200.2500', $number->toString());
+        $this->assertEquals('200.25', $number->toString(2));
+        $this->assertEquals('200', $number->toString(0));
+
+        $number = new Number(-200.25);
+
+        $this->assertEquals('-200.2500', $number->toString());
+        $this->assertEquals('-200.25', $number->toString(2));
+        $this->assertEquals('-200', $number->toString(0));
+    }
+
     public function testCanAddStringAsImmutable(): void
     {
         $number = new Number('200');
