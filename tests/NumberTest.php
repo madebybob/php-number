@@ -200,6 +200,9 @@ class NumberTest extends TestCase
 
         $zero = $number->divide('0.0000', null, '20.0000');
         $this->assertEquals('20.0000', $zero->toString());
+
+        $zero = $number->divide('0.0000', null, new Number('20.0000'));
+        $this->assertEquals('20.0000', $zero->toString());
     }
 
     public function testCanMultiplyNumberAsImmutable(): void
