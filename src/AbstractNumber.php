@@ -93,15 +93,14 @@ abstract class AbstractNumber implements NumberInterface
     public function divide($value, int $scale = null, $fallback = null): self
     {
         $number = $this->getNumberFromInput($value);
-        $fallback = $fallback ? $this->getNumberFromInput($fallback) : false;
         $scale = $scale ?? self::INTERNAL_SCALE;
 
         if ($number->isZero()) {
-            if ($fallback) {
-                return $this->init($fallback->toString());
+            if ($fallback === null) {
+                throw new DivisionByZeroError();
             }
 
-            throw new DivisionByZeroError();
+            return $this->init($fallback);
         }
 
         $div = bcdiv($this->value, $number->toString(), $scale);
