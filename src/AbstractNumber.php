@@ -31,7 +31,7 @@ abstract class AbstractNumber implements NumberInterface
     /**
      * Adds the given value to the current number.
      *
-     * @param Number|string|float|int $value
+     * @param AbstractNumber|string|float|int $value
      */
     public function add($value, int $scale = null): self
     {
@@ -46,7 +46,7 @@ abstract class AbstractNumber implements NumberInterface
     /**
      * Subtracts the given value from the current number.
      *
-     * @param Number|string|float|int $value
+     * @param AbstractNumber|string|float|int $value
      */
     public function subtract($value, int $scale = null): self
     {
@@ -61,7 +61,7 @@ abstract class AbstractNumber implements NumberInterface
     /**
      * Alias for subtract method.
      *
-     * @param Number|string|float|int $value
+     * @param AbstractNumber|string|float|int $value
      */
     public function sub($value, int $scale = null): self
     {
@@ -71,7 +71,7 @@ abstract class AbstractNumber implements NumberInterface
     /**
      * Alias for subtract method.
      *
-     * @param Number|string|float|int $value
+     * @param AbstractNumber|string|float|int $value
      */
     public function minus($value, int $scale = null): self
     {
@@ -87,8 +87,8 @@ abstract class AbstractNumber implements NumberInterface
      *   $divided = (new Number('200.000'))->divide($value, null, '0.0000')
      * ```
      *
-     * @param Number|string|float|int $value
-     * @param Number|string|float|int $fallback
+     * @param AbstractNumber|string|float|int $value
+     * @param AbstractNumber|string|float|int $fallback
      */
     public function divide($value, int $scale = null, $fallback = null): self
     {
@@ -111,8 +111,8 @@ abstract class AbstractNumber implements NumberInterface
     /**
      * Alias for divide method.
      *
-     * @param Number|string|float|int $value
-     * @param Number|string|float|int $fallback
+     * @param AbstractNumber|string|float|int $value
+     * @param AbstractNumber|string|float|int $fallback
      */
     public function div($value, int $scale = null, $fallback = null): self
     {
@@ -122,7 +122,7 @@ abstract class AbstractNumber implements NumberInterface
     /**
      * Multiplies the current value by the given number.
      *
-     * @param Number|string|float|int $value
+     * @param AbstractNumber|string|float|int $value
      */
     public function multiply($value, int $scale = null): self
     {
@@ -137,7 +137,7 @@ abstract class AbstractNumber implements NumberInterface
     /**
      * Alias for multiply method.
      *
-     * @param Number|string|float|int $value
+     * @param AbstractNumber|string|float|int $value
      */
     public function mul($value, int $scale = null): self
     {
@@ -147,7 +147,7 @@ abstract class AbstractNumber implements NumberInterface
     /**
      * Get modulus of the given value based on the current number.
      *
-     * @param Number|string|float|int $value
+     * @param AbstractNumber|string|float|int $value
      */
     public function modulus($value, int $scale = null): self
     {
@@ -162,7 +162,7 @@ abstract class AbstractNumber implements NumberInterface
     /**
      * Alias for modulus method.
      *
-     * @param Number|string|float|int $value
+     * @param AbstractNumber|string|float|int $value
      */
     public function mod($value, int $scale = null): self
     {
@@ -204,7 +204,7 @@ abstract class AbstractNumber implements NumberInterface
     /**
      * Returns boolean if the current value is greater than the given value.
      *
-     * @param Number|string|float|int $value
+     * @param AbstractNumber|string|float|int $value
      */
     public function isGreaterThan($value, int $scale = null): bool
     {
@@ -217,7 +217,7 @@ abstract class AbstractNumber implements NumberInterface
     /**
      * Returns boolean if the current value is less than the given value.
      *
-     * @param Number|string|float|int $value
+     * @param AbstractNumber|string|float|int $value
      */
     public function isLessThan($value, int $scale = null): bool
     {
@@ -230,7 +230,7 @@ abstract class AbstractNumber implements NumberInterface
     /**
      * Returns boolean if the current value is equal to the given value.
      *
-     * @param Number|string|float|int $value
+     * @param AbstractNumber|string|float|int $value
      */
     public function isEqual($value, int $scale = null): bool
     {
@@ -268,7 +268,7 @@ abstract class AbstractNumber implements NumberInterface
 
     /**
      * @internal Provides an instance of Number based on the input. Supports multiple input data types.
-     * @param Number|string|float|int $value
+     * @param AbstractNumber|string|float|int $value
      */
     private function getNumberFromInput($value): self
     {
