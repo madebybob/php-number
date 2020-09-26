@@ -7,6 +7,7 @@ use Madebybob\Number\Exception\InvalidNumberInputTypeException;
 use Madebybob\Number\Money;
 use Madebybob\Number\Number;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 class NumberTest extends TestCase
 {
@@ -61,6 +62,24 @@ class NumberTest extends TestCase
         $number = new Number($money);
 
         $this->assertEquals('955.0000', $number->toString());
+    }
+
+    public function testCannotInitializeFromNull(): void
+    {
+        $this->expectException(InvalidNumberInputTypeException::class);
+        new Number(null);
+    }
+
+    public function testCannotInitializeFromObject(): void
+    {
+        $this->expectException(InvalidNumberInputTypeException::class);
+        new Number(new stdClass());
+    }
+
+    public function testCannotInitializeFromBool(): void
+    {
+        $this->expectException(InvalidNumberInputTypeException::class);
+        new Number(true);
     }
 
     public function testCanAddStringAsImmutable(): void
