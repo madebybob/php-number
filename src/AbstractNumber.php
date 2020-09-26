@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Madebybob\Number;
 
+use Madebybob\Number\Exception\DivisionByZeroError;
 use Madebybob\Number\Exception\InvalidNumberInputTypeException;
 
 abstract class AbstractNumber implements NumberInterface
@@ -98,9 +99,9 @@ abstract class AbstractNumber implements NumberInterface
         if ($number->isZero()) {
             if ($fallback) {
                 return $this->init($fallback->toString());
-            } else {
-                throw new InvalidNumberInputTypeException($value);
             }
+
+            throw new DivisionByZeroError();
         }
 
         $div = bcdiv($this->value, $number->toString(), $scale);

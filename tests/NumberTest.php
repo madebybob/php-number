@@ -2,6 +2,7 @@
 
 namespace Madebybob\Number\Tests;
 
+use Madebybob\Number\Exception\DivisionByZeroError;
 use Madebybob\Number\Exception\InvalidNumberInputTypeException;
 use Madebybob\Number\Money;
 use Madebybob\Number\Number;
@@ -174,15 +175,20 @@ class NumberTest extends TestCase
         $this->assertEquals('50.0000', $result->toString());
     }
 
-    public function testCanNotDivideNull(): void
+    public function testCanNotDivideByZero(): void
+    {
+        $number = new Number('200');
+
+        $this->expectException(DivisionByZeroError::class);
+        $number->divide('0.0000');
+    }
+
+    public function testCanNotDivideByNull(): void
     {
         $number = new Number('200');
 
         $this->expectException(InvalidNumberInputTypeException::class);
         $number->divide(null);
-
-        $this->expectException(InvalidNumberInputTypeException::class);
-        $number->divide('0.0000');
     }
 
     public function testCanNotDivideNullWithFallback(): void
