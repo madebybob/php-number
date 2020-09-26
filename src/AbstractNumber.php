@@ -44,6 +44,16 @@ abstract class AbstractNumber implements NumberInterface
     }
 
     /**
+     * Alias for add method.
+     *
+     * @param AbstractNumber|string|float|int $value
+     */
+    public function plus($value, int $scale = null): self
+    {
+        return $this->add($value, $scale);
+    }
+
+    /**
      * Subtracts the given value from the current number.
      *
      * @param AbstractNumber|string|float|int $value
