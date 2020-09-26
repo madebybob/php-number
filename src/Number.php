@@ -9,7 +9,7 @@ use Madebybob\Number\Formatter\NumberFormatter;
 
 class Number extends AbstractNumber
 {
-    public function init(string $value): self
+    public function init($value): self
     {
         return new self($value, $this);
     }
