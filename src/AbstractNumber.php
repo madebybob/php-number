@@ -110,7 +110,7 @@ abstract class AbstractNumber implements NumberInterface
                 throw new DivisionByZeroError();
             }
 
-            return $this->init($fallback);
+            return $this->init((string) $fallback);
         }
 
         $div = bcdiv($this->value, $number->toString(), $scale);

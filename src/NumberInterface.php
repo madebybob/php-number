@@ -11,7 +11,7 @@ interface NumberInterface
     /**
      * Returns a new instance of the class which extends AbstractNumber::class.
      *
-     * @param AbstractNumber|string|float|int $value
+     * @param string|float|int $value
      */
     public function init($value): AbstractNumber;
 
