@@ -12,10 +12,9 @@ grumphp:
         triggered_by: ['php']
       psalm:
         config: psalm.xml.dist
-        ignore_patterns: []
         no_cache: false
         report: ~
         output_format: null
-        threads: 1
+        threads: null
         triggered_by: ['php']
         show_info: false
