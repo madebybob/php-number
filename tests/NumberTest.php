@@ -56,14 +56,6 @@ class NumberTest extends TestCase
         $this->assertEquals('-200', $number->toString(0));
     }
 
-    public function testCanInitializeFromNumber(): void
-    {
-        $money = new Money(955, 'EUR');
-        $number = new Number($money);
-
-        $this->assertEquals('955.0000', $number->toString());
-    }
-
     public function testCannotInitializeFromNull(): void
     {
         $this->expectException(InvalidNumberInputTypeException::class);
@@ -226,9 +218,6 @@ class NumberTest extends TestCase
         $this->assertEquals('0.0000', $zero->toString());
 
         $zero = $number->divide('0.0000', null, '20.0000');
-        $this->assertEquals('20.0000', $zero->toString());
-
-        $zero = $number->divide('0.0000', null, new Number('20.0000'));
         $this->assertEquals('20.0000', $zero->toString());
     }
 

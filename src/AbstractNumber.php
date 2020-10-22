@@ -16,11 +16,11 @@ abstract class AbstractNumber implements NumberInterface
     protected ?self $parent;
 
     /**
-     * @param AbstractNumber|string|float|int $value
+     * @param string|float|int $value
      */
     public function __construct($value, ?self $parent = null)
     {
-        if (! is_string($value) && ! is_float($value) && ! is_int($value) && ! $value instanceof self) {
+        if (! is_string($value) && ! is_float($value) && ! is_int($value)) {
             throw new InvalidNumberInputTypeException($value);
         }
 
@@ -98,7 +98,7 @@ abstract class AbstractNumber implements NumberInterface
      * ```
      *
      * @param AbstractNumber|string|float|int $value
-     * @param AbstractNumber|string|float|int $fallback
+     * @param AbstractNumber|string|float|int|null $fallback
      */
     public function divide($value, int $scale = null, $fallback = null): self
     {
@@ -122,7 +122,7 @@ abstract class AbstractNumber implements NumberInterface
      * Alias for divide method.
      *
      * @param AbstractNumber|string|float|int $value
-     * @param AbstractNumber|string|float|int $fallback
+     * @param AbstractNumber|string|float|int|null $fallback
      */
     public function div($value, int $scale = null, $fallback = null): self
     {

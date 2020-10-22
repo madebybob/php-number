@@ -36,7 +36,6 @@ use Madebybob\Number\Number;
 $number = new Number('200'); // from string
 $number = new Number(200); // from integer
 $number = new Number(200.8); // from float
-$number = new Number(new Money('200', 'EUR')); // from another AbstractNumber instance
 ```
 
 ### Add
