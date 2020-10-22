@@ -170,7 +170,6 @@ There is a lot to do since this project is experimental. Feel free to make sugge
 - [x] Implement `bcmul`
 - [ ] Implement `bcpow`
 - [ ] Implement `bcpowmod`
-- [ ] Implement `bcscale`
 - [ ] Implement `bcsqrt`
 
 ## Changelog
