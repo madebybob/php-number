@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Madebybob\Number;
 
-use Madebybob\Number\Formatter\FormatterInterface;
-use Madebybob\Number\Formatter\NumberFormatter;
+use Madebybob\Number\Formatter\Formatter;
 
 class Number extends AbstractNumber
 {
@@ -14,8 +13,8 @@ class Number extends AbstractNumber
         return new self($value, $this);
     }
 
-    public function formatter(): FormatterInterface
+    public function format(int $minFractionDigits = 0, int $maxFractionDigits = 2): string
     {
-        return new NumberFormatter();
+        return Formatter::format($this->value, $minFractionDigits, $maxFractionDigits);
     }
 }

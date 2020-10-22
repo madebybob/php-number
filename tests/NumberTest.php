@@ -2,6 +2,7 @@
 
 namespace Madebybob\Number\Tests;
 
+use Locale;
 use Madebybob\Number\Exception\DivisionByZeroError;
 use Madebybob\Number\Exception\InvalidNumberInputTypeException;
 use Madebybob\Number\Money;
@@ -430,5 +431,31 @@ class NumberTest extends TestCase
         $this->assertEquals($seven->isoCode(), 'EUR');
 
         $this->assertEquals($seven->parent(), $five);
+    }
+
+    public function testFormatNumber(): void
+    {
+        Locale::setDefault('nl_NL');
+
+        // Round up, default 4 fraction digits
+        $number = new Number('9342.15579453');
+        $this->assertEquals('9.342,16', $number->format());
+
+        $number = new Number('9342.15578453');
+        $this->assertEquals('9.342,15578453', $number->format(0, 8));
+
+        $number = new Number('5943.000000');
+        $this->assertEquals('5.943', $number->format(0, 0));
+    }
+
+    public function testFormatMoney(): void
+    {
+        Locale::setDefault('nl_NL');
+
+        $money = new Money('9342.1539', 'EUR');
+        $this->assertEquals('€ 9.342,15', $money->format());
+
+        $money = new Money('5.8393', 'EUR');
+        $this->assertEquals('€ 5,84', $money->format());
     }
 }

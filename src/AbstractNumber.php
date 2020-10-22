@@ -277,11 +277,11 @@ abstract class AbstractNumber implements NumberInterface
     }
 
     /**
-     * Formats the number using the Formatter.
+     * Formats the current Number;
      */
     public function format(): string
     {
-        return $this->formatter()->format($this);
+        return $this->toString();
     }
 
     /**

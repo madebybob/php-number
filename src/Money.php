@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Madebybob\Number;
 
-use Madebybob\Number\Formatter\FormatterInterface;
-use Madebybob\Number\Formatter\MoneyFormatter;
+use Madebybob\Number\Formatter\Formatter;
 
 class Money extends AbstractNumber
 {
@@ -27,8 +26,8 @@ class Money extends AbstractNumber
         return new self($value, $this->isoCode, $this);
     }
 
-    public function formatter(): FormatterInterface
+    public function format(): string
     {
-        return new MoneyFormatter();
+        return Formatter::formatCurrency($this->value, $this->isoCode);
     }
 }
