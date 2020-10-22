@@ -10,11 +10,3 @@ grumphp:
         verbose: true
         diff: false
         triggered_by: ['php']
-      psalm:
-        config: psalm.xml.dist
-        no_cache: false
-        report: ~
-        output_format: null
-        threads: null
-        triggered_by: ['php']
-        show_info: false
