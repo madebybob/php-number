@@ -21,6 +21,7 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.16",
+        "phpro/grumphp": "^1.0",
         "phpunit/phpunit": "^9.3",
         "symfony/var-dumper": "^5.1",
         "vimeo/psalm": "^3.11"
