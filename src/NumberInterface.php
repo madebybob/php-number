@@ -10,10 +10,8 @@ interface NumberInterface
 {
     /**
      * Returns a new instance of the class which extends AbstractNumber::class.
-     *
-     * @param string|float|int $value
      */
-    public function init($value): AbstractNumber;
+    public function init(string $value): AbstractNumber;
 
     public function formatter(): FormatterInterface;
 }

@@ -22,7 +22,7 @@ class Money extends AbstractNumber
         return $this->isoCode;
     }
 
-    public function init($value): self
+    public function init(string $value): self
     {
         return new self($value, $this->isoCode, $this);
     }
