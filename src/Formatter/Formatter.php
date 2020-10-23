@@ -7,7 +7,7 @@ namespace Madebybob\Number\Formatter;
 use Locale;
 use NumberFormatter;
 
-class Formatter
+abstract class Formatter
 {
     /**
      * Shorthand for formatting decimals.
