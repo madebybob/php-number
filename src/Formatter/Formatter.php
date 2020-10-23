@@ -6,6 +6,7 @@ namespace Madebybob\Number\Formatter;
 
 use Locale;
 use NumberFormatter;
+use RuntimeException;
 
 abstract class Formatter
 {
@@ -35,6 +36,10 @@ abstract class Formatter
      */
     public static function get(int $type, ?string $locale = null, array $options = []): NumberFormatter
     {
+        if (extension_loaded('intl') === false) {
+            throw new RuntimeException('PHP\'s intl extension is required to use the Formatter');
+        }
+
         if ($locale === null) {
             $locale = Locale::getDefault();
         }
