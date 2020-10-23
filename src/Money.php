@@ -28,6 +28,6 @@ class Money extends AbstractNumber
 
     public function format(): string
     {
-        return Formatter::formatCurrency($this->value, $this->isoCode);
+        return Formatter::formatCurrency($this->get(), $this->isoCode);
     }
 }

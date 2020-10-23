@@ -38,7 +38,7 @@ abstract class AbstractNumber implements NumberInterface
         $number = $this->getNumberFromInput($value);
         $scale = $scale ?? self::INTERNAL_SCALE;
 
-        $sum = bcadd($this->value, $number->toString(), $scale);
+        $sum = bcadd($this->value, $number->get(), $scale);
 
         return $this->init($sum);
     }
@@ -63,7 +63,7 @@ abstract class AbstractNumber implements NumberInterface
         $number = $this->getNumberFromInput($value);
         $scale = $scale ?? self::INTERNAL_SCALE;
 
-        $sum = bcsub($this->value, $number->toString(), $scale);
+        $sum = bcsub($this->value, $number->get(), $scale);
 
         return $this->init($sum);
     }
@@ -113,7 +113,7 @@ abstract class AbstractNumber implements NumberInterface
             return $this->init((string) $fallback);
         }
 
-        $div = bcdiv($this->value, $number->toString(), $scale);
+        $div = bcdiv($this->value, $number->get(), $scale);
 
         return $this->init($div);
     }
@@ -139,7 +139,7 @@ abstract class AbstractNumber implements NumberInterface
         $number = $this->getNumberFromInput($value);
         $scale = $scale ?? self::INTERNAL_SCALE;
 
-        $mul = bcmul($this->value, $number->toString(), $scale);
+        $mul = bcmul($this->value, $number->get(), $scale);
 
         return $this->init($mul);
     }
@@ -164,7 +164,7 @@ abstract class AbstractNumber implements NumberInterface
         $number = $this->getNumberFromInput($value);
         $scale = $scale ?? self::INTERNAL_SCALE;
 
-        $mod = bcmod($this->value, $number->toString(), $scale);
+        $mod = bcmod($this->value, $number->get(), $scale);
 
         return $this->init($mod);
     }
@@ -221,7 +221,7 @@ abstract class AbstractNumber implements NumberInterface
         $number = $this->getNumberFromInput($value);
         $scale = $scale ?? self::INTERNAL_SCALE;
 
-        return bccomp($this->value, $number->toString(), $scale) === 1;
+        return bccomp($this->value, $number->get(), $scale) === 1;
     }
 
     /**
@@ -234,7 +234,7 @@ abstract class AbstractNumber implements NumberInterface
         $number = $this->getNumberFromInput($value);
         $scale = $scale ?? self::INTERNAL_SCALE;
 
-        return bccomp($this->value, $number->toString(), $scale) === -1;
+        return bccomp($this->value, $number->get(), $scale) === -1;
     }
 
     /**
@@ -247,7 +247,7 @@ abstract class AbstractNumber implements NumberInterface
         $number = $this->getNumberFromInput($value);
         $scale = $scale ?? self::INTERNAL_SCALE;
 
-        return bccomp($this->value, $number->toString(), $scale) === 0;
+        return bccomp($this->value, $number->get(), $scale) === 0;
     }
 
     /**
@@ -277,7 +277,15 @@ abstract class AbstractNumber implements NumberInterface
     }
 
     /**
-     * Formats the current Number;
+     * @internal Provides value with internal scale.
+     */
+    protected function get(): string
+    {
+        return $this->toString(self::INTERNAL_SCALE);
+    }
+
+    /**
+     * Default formatting implementation.
      */
     public function format(): string
     {
