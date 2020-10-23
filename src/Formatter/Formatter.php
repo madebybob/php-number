@@ -14,7 +14,12 @@ class Formatter
      */
     public static function format(string $value, ?int $minFractionDigits = null, ?int $maxFractionDigits = null, ?string $locale = null): string
     {
-        return self::get(NumberFormatter::DECIMAL, $locale, $minFractionDigits, $maxFractionDigits)->format($value);
+        $options = [
+            NumberFormatter::MIN_FRACTION_DIGITS => $minFractionDigits,
+            NumberFormatter::MAX_FRACTION_DIGITS => $maxFractionDigits,
+        ];
+
+        return self::get(NumberFormatter::DECIMAL, $locale, $options)->format($value);
     }
 
     /**
@@ -26,20 +31,21 @@ class Formatter
     }
 
     /**
-     * Provides an NumberFormatter instance of the PHP intl extension.
+     * Provides an NumberFormatter instance of the PHP intl extension (and some syntax sugar).
      */
-    public static function get(int $type, ?string $locale = null, ?int $minFractionDigits = null, ?int $maxFractionDigits = null): NumberFormatter
+    public static function get(int $type, ?string $locale = null, array $options = []): NumberFormatter
     {
         if ($locale === null) {
             $locale = Locale::getDefault();
         }
 
         $formatter = new NumberFormatter($locale, $type);
-        if ($minFractionDigits !== null) {
-            $formatter->setAttribute(NumberFormatter::MIN_FRACTION_DIGITS, $minFractionDigits);
-        }
-        if ($maxFractionDigits !== null) {
-            $formatter->setAttribute(NumberFormatter::MAX_FRACTION_DIGITS, $maxFractionDigits);
+        foreach ($options as $key => $value) {
+            if ($value === null) {
+                continue;
+            }
+
+            $formatter->setAttribute($key, $value);
         }
 
         return $formatter;
