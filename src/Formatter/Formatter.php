@@ -14,7 +14,7 @@ class Formatter
      */
     public static function format(string $value, ?int $minFractionDigits = null, ?int $maxFractionDigits = null, ?string $locale = null): string
     {
-        return self::get(NumberFormatter::DECIMAL, $minFractionDigits, $maxFractionDigits, $locale)->format($value);
+        return self::get(NumberFormatter::DECIMAL, $locale, $minFractionDigits, $maxFractionDigits)->format($value);
     }
 
     /**
@@ -28,7 +28,7 @@ class Formatter
     /**
      * Provides an NumberFormatter instance of the PHP intl extension.
      */
-    public static function get(int $type, ?int $minFractionDigits = null, ?int $maxFractionDigits = null, ?string $locale = null): NumberFormatter
+    public static function get(int $type, ?string $locale = null, ?int $minFractionDigits = null, ?int $maxFractionDigits = null): NumberFormatter
     {
         if ($locale === null) {
             $locale = Locale::getDefault();
