@@ -8,7 +8,7 @@ use Madebybob\Number\Formatter\Formatter;
 
 class Money extends AbstractNumber
 {
-    private string $isoCode;
+    protected string $isoCode;
 
     public function __construct($value, string $isoCode, ?AbstractNumber $parent = null)
     {
