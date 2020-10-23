@@ -161,8 +161,7 @@ composer test
 
 There is a lot to do since this project is experimental. Feel free to make suggestions through a Github Issue or push your own contribution via a Pull Request. Don't be afraid you'll break anything; we got you covered by tests :)
 
-- [ ] Add `Formatter` class to format every number (like price, weight, et cetera) into a plain Number object
-- [ ] Improve `Formatter` class to format `Number` instance into human readable numbers like price and weight
+- [x] Add `Formatter` class to format implementations of the AbstractFormatter class
 - [x] Implement `bccomp`
 - [x] Implement `bcdiv`
 - [x] Implement `bcmod`
