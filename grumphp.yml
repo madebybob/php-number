@@ -1,4 +1,6 @@
 grumphp:
+    parallel:
+      enabled: false
     tasks:
       phpcsfixer2:
         allow_risky: false
@@ -10,3 +12,12 @@ grumphp:
         verbose: true
         diff: false
         triggered_by: ['php']
+      psalm:
+        config: psalm.xml.dist
+        ignore_patterns: []
+        no_cache: false
+        report: ~
+        output_format: null
+        threads: 1
+        triggered_by: ['php']
+        show_info: false
