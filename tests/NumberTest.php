@@ -3,6 +3,7 @@
 namespace Madebybob\Number\Tests;
 
 use Locale;
+use Madebybob\Number\Exception\DecimalExponentError;
 use Madebybob\Number\Exception\DivisionByZeroError;
 use Madebybob\Number\Exception\InvalidNumberInputTypeException;
 use Madebybob\Number\Money;
@@ -336,6 +337,56 @@ class NumberTest extends TestCase
 
         $this->expectException(InvalidNumberInputTypeException::class);
         $number->modulus(null);
+    }
+
+    public function testCanRaiseNumberToThePowerOfValueAsImmutable(): void
+    {
+        $number = new Number('9');
+        $result = $number->pow(new Number('3'));
+
+        $this->assertInstanceOf(Number::class, $result);
+        $this->assertEquals('9.0000', $number->toString());
+        $this->assertEquals('729.0000', $result->toString());
+    }
+
+    public function testCannotRaiseNumberToThePowerOfDecimal(): void
+    {
+        $number = new Number('200');
+
+        $this->expectException(DecimalExponentError::class);
+        $number->pow('28.75');
+    }
+
+    public function testCannotRaiseNumberToThePowerOfArray(): void
+    {
+        $number = new Number('200');
+
+        $this->expectException(InvalidNumberInputTypeException::class);
+        $number->pow([]);
+    }
+
+    public function testCannotRaiseNumberToThePowerOfObject(): void
+    {
+        $number = new Number('200');
+
+        $this->expectException(InvalidNumberInputTypeException::class);
+        $number->pow(new \stdClass());
+    }
+
+    public function CannotRaiseNumberToThePowerOfBoolean(): void
+    {
+        $number = new Number('200');
+
+        $this->expectException(InvalidNumberInputTypeException::class);
+        $number->pow(true);
+    }
+
+    public function testCannotRaiseNumberToThePowerOfNull(): void
+    {
+        $number = new Number('200');
+
+        $this->expectException(InvalidNumberInputTypeException::class);
+        $number->pow(null);
     }
 
     public function testIsPositive(): void

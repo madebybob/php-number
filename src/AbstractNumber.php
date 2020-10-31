@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Madebybob\Number;
 
+use Madebybob\Number\Exception\DecimalExponentError;
 use Madebybob\Number\Exception\DivisionByZeroError;
 use Madebybob\Number\Exception\InvalidNumberInputTypeException;
 
@@ -177,6 +178,26 @@ abstract class AbstractNumber implements NumberInterface
     public function mod($value, int $scale = null): self
     {
         return $this->modulus($value, $scale);
+    }
+
+    /**
+     * Raises the current number to the power of the given exponent.
+     *
+     * @param AbstractNumber|string|float|int $value
+     */
+    public function pow($value, int $scale = null): self
+    {
+        $exponent = $this->getNumberFromInput($value);
+        $scale = $scale ?? self::INTERNAL_SCALE;
+
+        $exponentWithZeroScale = $exponent->toString(0);
+        if ($exponent->isEqual($exponentWithZeroScale) === false) {
+            throw new DecimalExponentError();
+        }
+
+        $mod = bcpow($this->value, $exponentWithZeroScale, $scale);
+
+        return $this->init($mod);
     }
 
     /**
