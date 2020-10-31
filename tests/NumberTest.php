@@ -239,14 +239,6 @@ class NumberTest extends TestCase
         $this->assertInstanceOf(Number::class, $result);
         $this->assertEquals('200.0000', $number->toString());
         $this->assertEquals('800.0000', $result->toString());
-
-        // alias minus
-        $number = new Number('200');
-        $result = $number->minus(new Number('50'));
-
-        $this->assertInstanceOf(Number::class, $result);
-        $this->assertEquals('200.0000', $number->toString());
-        $this->assertEquals('150.0000', $result->toString());
     }
 
     public function testCannotMultiplyArray(): void
@@ -373,7 +365,7 @@ class NumberTest extends TestCase
         $number->pow(new \stdClass());
     }
 
-    public function CannotRaiseNumberToThePowerOfBoolean(): void
+    public function testCannotRaiseNumberToThePowerOfBoolean(): void
     {
         $number = new Number('200');
 
