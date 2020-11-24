@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Madebybob\Number;
+namespace Number;
 
 interface NumberInterface
 {

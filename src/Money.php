@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Madebybob\Number;
+namespace Number;
 
-use Madebybob\Number\Formatter\Formatter;
+use Number\Formatter\Formatter;
 
 class Money extends AbstractNumber
 {

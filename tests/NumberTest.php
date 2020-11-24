@@ -1,23 +1,18 @@
 <?php
 
-namespace Madebybob\Number\Tests;
+namespace Number\Tests;
 
 use Locale;
-use Madebybob\Number\Exception\DecimalExponentError;
-use Madebybob\Number\Exception\DivisionByZeroError;
-use Madebybob\Number\Exception\InvalidNumberInputTypeException;
-use Madebybob\Number\Money;
-use Madebybob\Number\Number;
+use Number\Exception\DecimalExponentError;
+use Number\Exception\DivisionByZeroError;
+use Number\Exception\InvalidNumberInputTypeException;
+use Number\Money;
+use Number\Number;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
 class NumberTest extends TestCase
 {
-    /** @test */
-    public function true_is_true(): void
-    {
-        $this->assertTrue(true);
-    }
 
     public function testCanInitializeFromString(): void
     {

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Madebybob\Number;
+namespace Number;
 
-use Madebybob\Number\Exception\DecimalExponentError;
-use Madebybob\Number\Exception\DivisionByZeroError;
-use Madebybob\Number\Exception\InvalidNumberInputTypeException;
+use Number\Exception\DecimalExponentError;
+use Number\Exception\DivisionByZeroError;
+use Number\Exception\InvalidNumberInputTypeException;
 
 abstract class AbstractNumber implements NumberInterface
 {

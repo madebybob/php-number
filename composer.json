@@ -28,12 +28,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Madebybob\\Number\\": "src"
+            "Number\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Madebybob\\Number\\Tests\\": "tests"
+            "Number\\Tests\\": "tests"
         }
     },
     "scripts": {
