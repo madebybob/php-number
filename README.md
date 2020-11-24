@@ -8,9 +8,11 @@
 This library aims to deal with numbers like prices, weights, quantities, et cetera.
 
 #### The problem
-Have you ever worked with prices, weights, or any other numbers in PHP? What type are they? Integer? A String? Or did you get a float to manage decimals?
+Have you ever worked with prices, weights, or any other numbers in PHP? What type are they? An integer? A string? Or did 
+you get a float to manage decimals?
 
-Ahh, after hours of investigation you've found [bcmath](https://www.php.net/manual/en/book.bc.php), but it is still hard to manage your numbers in your codebase. While `bcmath` is a great library to make calculations with, the API is not easy to use.
+Ahh, after hours of investigation you've found [bcmath](https://www.php.net/manual/en/book.bc.php), so you can do math 
+with your numbers. But it is still hard to manage your numbers in your codebase, because you cannot typehint anything.
 
 #### The solution
 This library will help you to manage numbers because you can typhint them (`getTotal(Number $quantity)`) and make calculations on the number itself (`$number->sum('200')'`).
