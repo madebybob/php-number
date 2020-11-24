@@ -13,7 +13,6 @@ use stdClass;
 
 class NumberTest extends TestCase
 {
-
     public function testCanInitializeFromString(): void
     {
         $number = new Number('200');
