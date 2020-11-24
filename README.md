@@ -27,14 +27,14 @@ composer require madebybob/php-number
 
 ## Usage
 
-In short, the `Madebybob\Number\Number` class is where it's all about.
+In short, the `Number\Number` class is where it's all about.
 
 A short overview of what you can do with the class:
 
 ### Instance
 
 ``` php
-use Madebybob\Number\Number;
+use Number\Number;
 
 $number = new Number('200'); // from string
 $number = new Number(200); // from integer
@@ -44,7 +44,7 @@ $number = new Number(200.8); // from float
 ### Add
 
 ``` php
-use Madebybob\Number\Number;
+use Number\Number;
 
 $newNumber = $number
     ->add('200')
@@ -54,7 +54,7 @@ $newNumber = $number
 ### Subtract
 
 ``` php
-use Madebybob\Number\Number;
+use Number\Number;
 
 $newNumber = $number
     ->subtract('200')
@@ -65,7 +65,7 @@ $newNumber = $number
 ### Divide
 
 ``` php
-use Madebybob\Number\Number;
+use Number\Number;
 
 $newNumber = $number
     ->divide('200')
@@ -75,7 +75,7 @@ $newNumber = $number
 ### Multiply
 
 ``` php
-use Madebybob\Number\Number;
+use Number\Number;
 
 $newNumber = $number
     ->multiply('200')
@@ -85,7 +85,7 @@ $newNumber = $number
 ### Modulus
 
 ``` php
-use Madebybob\Number\Number;
+use Number\Number;
 
 $newNumber = $number
     ->modulus('200')
@@ -95,7 +95,7 @@ $newNumber = $number
 ### Comparison
 
 ``` php
-use Madebybob\Number\Number;
+use Number\Number;
 
 $number = new Number('200');
 
@@ -112,7 +112,7 @@ $number->isEqual('100');
 ### State
 
 ``` php
-use Madebybob\Number\Number;
+use Number\Number;
 
 $number = new Number('200');
 
