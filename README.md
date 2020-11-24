@@ -3,6 +3,8 @@
 ![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/madebybob/php-number/Tests/master?label=Tests&logo=Tests)
 ![GitHub](https://img.shields.io/github/license/madebybob/php-number)
 
+![PHP Number](https://raw.githubusercontent.com/madebybob/php-number/master/.github/art.png)
+
 This library aims to deal with numbers like prices, weights, quantities, et cetera.
 
 #### The problem
