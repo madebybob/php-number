@@ -375,6 +375,56 @@ class NumberTest extends TestCase
         $number->pow(null);
     }
 
+    public function testCanGetModulusNumberByThePowerOfValueAsImmutable(): void
+    {
+        $number = new Number('9');
+        $result = $number->powmod(new Number('4'), new Number('5'));
+
+        $this->assertInstanceOf(Number::class, $result);
+        $this->assertEquals('9.0000', $number->toString());
+        $this->assertEquals('1.0000', $result->toString());
+    }
+
+    public function testCannotGetModulusNumberToThePowerOfDecimal(): void
+    {
+        $number = new Number('200');
+
+        $this->expectException(DecimalExponentError::class);
+        $number->powmod('28.75', '2');
+    }
+
+    public function testCannotGetModulusNumberToThePowerOfArray(): void
+    {
+        $number = new Number('200');
+
+        $this->expectException(InvalidNumberInputTypeException::class);
+        $number->powmod([], '2');
+    }
+
+    public function testCannotGetModulusNumberToThePowerOfObject(): void
+    {
+        $number = new Number('200');
+
+        $this->expectException(InvalidNumberInputTypeException::class);
+        $number->powmod(new \stdClass(), '2');
+    }
+
+    public function testCannotGetModulusNumberToThePowerOfBoolean(): void
+    {
+        $number = new Number('200');
+
+        $this->expectException(InvalidNumberInputTypeException::class);
+        $number->powmod(true, '2');
+    }
+
+    public function testCannotGetModulusNumberToThePowerOfNull(): void
+    {
+        $number = new Number('200');
+
+        $this->expectException(InvalidNumberInputTypeException::class);
+        $number->powmod(null, '2');
+    }
+
     public function testIsPositive(): void
     {
         $this->assertTrue((new Number('200'))->isPositive());

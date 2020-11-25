@@ -200,6 +200,22 @@ abstract class AbstractNumber implements NumberInterface
         return $this->init($mod);
     }
 
+    public function powmod($value, $modulus, int $scale = null): self
+    {
+        $exponent = $this->getNumberFromInput($value);
+        $modulus = $this->getNumberFromInput($modulus);
+        $scale = $scale ?? self::INTERNAL_SCALE;
+
+        $exponentWithZeroScale = $exponent->toString(0);
+        if ($exponent->isEqual($exponentWithZeroScale) === false) {
+            throw new DecimalExponentError();
+        }
+
+        $powmod = bcpowmod($this->value, $exponentWithZeroScale, $modulus->toString(0), $scale);
+
+        return $this->init($powmod);
+    }
+
     /**
      * Return boolean if the current value is a positive number.
      */
