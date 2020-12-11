@@ -13,6 +13,18 @@ use stdClass;
 
 class NumberTest extends TestCase
 {
+    public function testCanInitializeFromStaticMethod(): void
+    {
+        $number = Number::create('200');
+        $this->assertEquals('200.0000', $number->toString());
+
+        $number = new Number(300);
+        $this->assertEquals('300.0000', $number->toString());
+
+        $number = new Number(200.25);
+        $this->assertEquals('200.2500', $number->toString());
+    }
+
     public function testCanInitializeFromString(): void
     {
         $number = new Number('200');

@@ -8,6 +8,14 @@ use Number\Formatter\Formatter;
 
 class Number extends AbstractNumber
 {
+    /**
+     * @param string|float|int $value
+     */
+    public static function create($value): self
+    {
+        return new self($value);
+    }
+
     public function init(string $value): self
     {
         return new self($value, $this);
