@@ -30,7 +30,6 @@ This library will help you to manage numbers because you can typhint them (`getT
     - [Formatters](#formatters)
 - [Testing](#testing)
 - [Php CS Fixer](#php-cs-fixer)
-- [Wishlist](#wishlist)
 - [Changelog](#changelog)
 - [Contributing](#contributing)
 - [Credits](#credits)
@@ -203,18 +202,6 @@ composer test
 ```` bash
 ./vendor/bin/php-cs-fixer fix
 ````
-
-## Wishlist
-Feel free to make suggestions through a Github Issue or push your own contribution via a Pull Request. Don't be afraid you'll break anything; we got you covered by tests :)
-
-- [x] Add `Formatter` class to format implementations of the AbstractFormatter class
-- [x] Implement `bccomp`
-- [x] Implement `bcdiv`
-- [x] Implement `bcmod`
-- [x] Implement `bcmul`
-- [x] Implement `bcpow`
-- [ ] Implement `bcpowmod`
-- [ ] Implement `bcsqrt`
 
 ## Changelog
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
