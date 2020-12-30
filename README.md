@@ -5,7 +5,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/madebybob/php-number.svg)](https://packagist.org/packages/madebybob/php-number)
 ![GitHub](https://img.shields.io/github/license/madebybob/php-number)
 
-![PHP Number](https://raw.githubusercontent.com/madebybob/php-number/master/.github/art.png)
+![PHP Number](https://raw.githubusercontent.com/madebybob/php-number/master/.github/art-staartjes.png)
 
 This library aims to deal with numbers like prices, weights, quantities, et cetera.
 
