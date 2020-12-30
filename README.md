@@ -22,6 +22,8 @@ are immutable you can chain your methods on them.
 #### Scope
 This library aims to make your code cleaner. You can typehint the `Number` class, and you can make cleaner calculations.
 We have chosen not to support specific implementations of numbers like Money. This is too specific and out of scope.
+Instead, you can create custom `Number` implementations and create your own `format` method. This way, you can be even 
+more specific with your types, which is all of your responsibility.
 
 ## Table of Contents
 - [Installation](#installation)
