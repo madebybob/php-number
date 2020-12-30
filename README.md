@@ -9,13 +9,19 @@ This library aims to deal with numbers like prices, weights, quantities, et cete
 
 #### The problem
 Have you ever worked with prices, weights, or any other numbers in PHP? What type are they? An integer? A string? Or did 
-you get a float to manage decimals?
+you get a float to manage decimals? And how can you do calculations with them?
 
 Ahh, after hours of investigation you've found [bcmath](https://www.php.net/manual/en/book.bc.php), so you can do math 
 with your numbers. But it is still hard to manage your numbers in your codebase, because you cannot typehint anything.
 
 #### The solution
-This library will help you to manage numbers because you can typhint them (`getTotal(Number $quantity)`) and make calculations on the number itself (`$number->sum('200')'`).
+This library will help you to manage number in your codebase. Using the `Number` class you can typhint them 
+(`getTotal(Number $quantity)`) and make calculations on the number itself (`$number->sum('200')'`). Since those methods
+are immutable you can chain your methods on them. 
+
+#### Scope
+This library aims to make your code cleaner. You can typehint the `Number` class, and you can make cleaner calculations.
+We have chosen not to support specific implementations of numbers like Money. This is too specific and out of scope.
 
 ## Table of Contents
 - [Installation](#installation)
@@ -103,6 +109,15 @@ To get the modulus of the current number instance:
 $newNumber = $number
     ->modulus('200')
     ->mod('200'); // mod is an alias for modulus
+```
+
+### Square root
+To get the square root of the current number instance:
+
+``` php
+$sqrt = $number
+    ->sqrt()
+    ->squareRoot(); // squareRoot is an alias for sqrt
 ```
 
 ### State & Comparison
