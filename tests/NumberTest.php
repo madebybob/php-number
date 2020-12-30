@@ -6,7 +6,6 @@ use Locale;
 use Number\Exception\DecimalExponentError;
 use Number\Exception\DivisionByZeroError;
 use Number\Exception\InvalidNumberInputTypeException;
-use Number\Money;
 use Number\Number;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -17,12 +16,6 @@ class NumberTest extends TestCase
     {
         $number = Number::create('200');
         $this->assertEquals('200.0000', $number->toString());
-
-        $number = new Number(300);
-        $this->assertEquals('300.0000', $number->toString());
-
-        $number = new Number(200.25);
-        $this->assertEquals('200.2500', $number->toString());
     }
 
     public function testCanInitializeFromString(): void
@@ -545,21 +538,6 @@ class NumberTest extends TestCase
         $this->assertNull($five->parent());
     }
 
-    public function testCanInitializeMoney(): void
-    {
-        // Instance initialized by constructor.
-        $five = new Money(5, 'EUR');
-        $this->assertEquals($five->toString(), '5.0000');
-        $this->assertEquals($five->isoCode(), 'EUR');
-
-        // Instance initialized by init().
-        $seven = $five->add(2);
-        $this->assertEquals($seven->toString(), '7.0000');
-        $this->assertEquals($seven->isoCode(), 'EUR');
-
-        $this->assertEquals($seven->parent(), $five);
-    }
-
     public function testFormatNumber(): void
     {
         Locale::setDefault('nl_NL');
@@ -573,16 +551,5 @@ class NumberTest extends TestCase
 
         $number = new Number('5943.000000');
         $this->assertEquals('5.943', $number->format(0, 0));
-    }
-
-    public function testFormatMoney(): void
-    {
-        Locale::setDefault('nl_NL');
-
-        $money = new Money('9342.1539', 'EUR');
-        $this->assertEquals('€ 9.342,15', $money->format());
-
-        $money = new Money('5.8393', 'EUR');
-        $this->assertEquals('€ 5,84', $money->format());
     }
 }
