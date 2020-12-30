@@ -37,9 +37,8 @@ more specific with your types, which is all of your responsibility.
     - [Modulus](#modulus)
     - [State & Comparison](#state--comparison)
     - [Immutable & Chaining](#immutable--chaining)
-    - [Formatters](#formatters)
-- [Testing](#testing)
-- [Php CS Fixer](#php-cs-fixer)
+    - [Custom implementations](#custom-implementations)
+- [Testing](#testing--php-cs-fixer)
 - [Changelog](#changelog)
 - [Contributing](#contributing)
 - [Credits](#credits)
@@ -171,53 +170,40 @@ $result = $number
     ->toString();
 ```
 
-## Formatters
-Formatters are a nicety for this library, which makes it easier to parse your number instances into human understandable 
-information. Because formatters are use case specific, they are not part of the `AbstractNumber` or `Number` class. 
-Instead, formatters should be specified on a new class which extends `AbstractNumber` class.
-
-A nice example is the enclosed `Number/Money` class:
+## Custom implementations
+We encourage you to create custom implementations of the `AbstractNumber` class for specific use cases. This enables you 
+to type hint much better which type of number you expect. A nice example is a custom `Money` class:
 
 ``` php
 class Money extends AbstractNumber
 {
-    protected string $isoCode;
-
-    public function __construct($value, string $isoCode, ?AbstractNumber $parent = null)
+    public function format(string $isoCode): string
     {
-        parent::__construct($value, $parent);
-        $this->isoCode = $isoCode;
-    }
-
-    public function isoCode(): string
-    {
-        return $this->isoCode;
-    }
-
-    public function init(string $value): self
-    {
-        return new self($value, $this->isoCode, $this);
-    }
-
-    public function format(): string
-    {
-        return Formatter::formatCurrency($this->get(), $this->isoCode);
+        return Formatter::formatMoney($this->get(), $isoCode);
     }
 }
 ```
 
-Please note that the `Money` class uses a custom constructor and implementation for `init`. Next, the `format` method is 
-specified to the use case.
+Now you can easily specify your types much better e.g.:
 
-We would advice you to create your own `AbstractNumber` implementation for specific use cases, e.g. money, quantity, weight, et cetera.
-This enables you to type hint much better which type of number you expect.
+```php
+public function calculateVatAmount(Money $amount, Number $percentage): Money
+{
+    $vatAmount = $amount->divide(100, 0)->multiply($percentage);
 
-## Testing
+  	if ($vatAmount->isNegative()) {
+    	return Money::create(0);
+    }
+
+    return $vatAmount;
+}
+```
+
+## Testing & Php CS Fixer 
 ``` bash
 composer test
 ```
 
-## Php CS Fixer
 ```` bash
 ./vendor/bin/php-cs-fixer fix
 ````
