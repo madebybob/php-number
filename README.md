@@ -191,8 +191,8 @@ public function calculateVatAmount(Money $amount, Number $percentage): Money
 {
     $vatAmount = $amount->divide(100, 0)->multiply($percentage);
 
-  	if ($vatAmount->isNegative()) {
-    	return Money::create(0);
+    if ($vatAmount->isNegative()) {
+        return Money::create(0);
     }
 
     return $vatAmount;
