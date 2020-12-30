@@ -437,6 +437,34 @@ class NumberTest extends TestCase
         $number->powmod(null, '2');
     }
 
+    public function testCanGetSquareRootNumberAsImmutable(): void
+    {
+        $number = new Number('9');
+        $result = $number->sqrt();
+
+        $this->assertInstanceOf(Number::class, $result);
+        $this->assertEquals('9.0000', $number->toString());
+        $this->assertEquals('3.0000', $result->toString());
+
+        // alias mod
+        $result = $number->squareRoot();
+
+        $this->assertInstanceOf(Number::class, $result);
+        $this->assertEquals('9.0000', $number->toString());
+        $this->assertEquals('3.0000', $result->toString());
+    }
+
+    public function testCanGetSquareRootWithScale(): void
+    {
+        $number = new Number('200');
+
+        $this->assertEquals('14.1421', $number->sqrt());
+        $this->assertEquals('14.142', $number->sqrt(3));
+        $this->assertEquals('14.14', $number->sqrt(2));
+        $this->assertEquals('14.1', $number->sqrt(1));
+        $this->assertEquals('14', $number->sqrt(0));
+    }
+
     public function testIsPositive(): void
     {
         $this->assertTrue((new Number('200'))->isPositive());
