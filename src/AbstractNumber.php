@@ -200,6 +200,11 @@ abstract class AbstractNumber implements NumberInterface
         return $this->init($mod);
     }
 
+    /**
+     * Raise an arbitrary precision number to another, reduced by a specified modulus.
+     *
+     * @param AbstractNumber|string|float|int $value
+     */
     public function powmod($value, $modulus, int $scale = null): self
     {
         $exponent = $this->getNumberFromInput($value);
@@ -214,6 +219,30 @@ abstract class AbstractNumber implements NumberInterface
         $powmod = bcpowmod($this->value, $exponentWithZeroScale, $modulus->toString(0), $scale);
 
         return $this->init($powmod);
+    }
+
+    /**
+     * Get the square root of an arbitrary precision number.
+     *
+     * @param AbstractNumber|string|float|int $value
+     */
+    public function sqrt(int $scale = null): self
+    {
+        $scale = $scale ?? self::INTERNAL_SCALE;
+
+        $mod = bcsqrt($this->value, $scale);
+
+        return $this->init($mod);
+    }
+
+    /**
+     * Alias for sqrt method.
+     *
+     * @param AbstractNumber|string|float|int $value
+     */
+    public function squareRoot(int $scale = null): self
+    {
+        return $this->sqrt($scale);
     }
 
     /**
