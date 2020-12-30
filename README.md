@@ -1,6 +1,8 @@
 # PHP Number - Deal with numbers the right way
 
 ![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/madebybob/php-number/Tests/master?label=Tests&logo=Tests)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/madebybob/php-number.svg)](https://packagist.org/packages/madebybob/php-number)
+[![Total Downloads](https://img.shields.io/packagist/dt/madebybob/php-number.svg)](https://packagist.org/packages/madebybob/php-number)
 ![GitHub](https://img.shields.io/github/license/madebybob/php-number)
 
 ![PHP Number](https://raw.githubusercontent.com/madebybob/php-number/master/.github/art.png)
