@@ -8,7 +8,7 @@ use Number\Exception\DecimalExponentError;
 use Number\Exception\DivisionByZeroError;
 use Number\Exception\InvalidNumberInputTypeException;
 
-abstract class AbstractNumber implements NumberInterface
+abstract class AbstractNumber
 {
     protected const INTERNAL_SCALE = 12;
     protected const DEFAULT_SCALE = 4;
@@ -27,6 +27,19 @@ abstract class AbstractNumber implements NumberInterface
 
         $this->value = (string) $value;
         $this->parent = $parent;
+    }
+
+    /**
+     * @param string|float|int $value
+     */
+    public static function create($value): self
+    {
+        return new static($value);
+    }
+
+    public function init(string $value): self
+    {
+        return new static($value, $this);
     }
 
     /**
@@ -348,14 +361,6 @@ abstract class AbstractNumber implements NumberInterface
     protected function get(): string
     {
         return $this->toString(self::INTERNAL_SCALE);
-    }
-
-    /**
-     * Default formatting implementation.
-     */
-    public function format(): string
-    {
-        return $this->toString();
     }
 
     /**

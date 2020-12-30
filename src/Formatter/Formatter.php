@@ -26,7 +26,7 @@ abstract class Formatter
     /**
      * Shorthand for formatting currency amounts.
      */
-    public static function formatCurrency(string $value, string $isoCode, ?string $locale = null): string
+    public static function formatMoney(string $value, string $isoCode, ?string $locale = null): string
     {
         return self::get(NumberFormatter::CURRENCY, $locale)->formatCurrency((float) $value, $isoCode);
     }
