@@ -57,13 +57,20 @@ In short, the `Number\Number` class is where it's all about. This is how you can
 ``` php
 use Number\Number;
 
-$number = new Number('200'); // from string
-$number = new Number(200); // from integer
-$number = new Number(200.8); // from float
+// with string
+$number = new Number('200');
 
-$quantity = new Number(4);
+// with integer
+$number = new Number(200);
 
-$total = $number->add($quantity); // from Number instance
+// with float
+$number = new Number(200.8);
+
+// via static method
+$quantity = Number::create(4);
+
+// calculations
+$total = $number->add($quantity);
 ```
 
 Creating new numbers (or using them in the methods below) supports types like `Number`, string, integer and float.
