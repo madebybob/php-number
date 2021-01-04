@@ -29,14 +29,6 @@ abstract class AbstractNumber
         $this->parent = $parent;
     }
 
-    /**
-     * @param string|float|int $value
-     */
-    public static function create($value): self
-    {
-        return new static($value);
-    }
-
     public function init(string $value): self
     {
         return new static($value, $this);
