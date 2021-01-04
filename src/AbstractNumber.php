@@ -359,7 +359,7 @@ abstract class AbstractNumber
      * @internal Provides an instance of Number based on the input. Supports multiple input data types.
      * @param AbstractNumber|string|float|int $value
      */
-    private function getNumberFromInput($value): self
+    protected function getNumberFromInput($value): self
     {
         if ($value instanceof self) {
             return $value;
