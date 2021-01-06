@@ -7,25 +7,28 @@
 
 ![PHP Number](https://raw.githubusercontent.com/madebybob/php-number/master/.github/art-staartjes.png)
 
-This library aims to deal with numbers like prices, weights, quantities, et cetera.
+This library aims to deal with numbers like prices, weights and quantities the right way in PHP. 
 
 #### The problem
 Have you ever worked with prices, weights, or any other numbers in PHP? What type are they? An integer? A string? Or did 
-you get a float to manage decimals? And how can you do calculations with them?
+you get a float to manage decimals? And how can you do calculations with them? We have all struggled with float's [counter-intuitive behavior](https://medium.com/@rtheunissen/accurate-numbers-in-php-b6954f6cd577).
 
-Ahh, after hours of investigation you've found [bcmath](https://www.php.net/manual/en/book.bc.php), so you can do math 
-with your numbers. But it is still hard to manage your numbers in your codebase, because you cannot typehint anything.
+Ahh, after hours of investigation you've found [BC Math](https://www.php.net/manual/en/book.bc.php). Now you can do math 
+with your numbers. However, it is still hard to manage those numbers in your codebase. BC Math only accepts and returns 
+strings. Type hinting strings when working with numbers as a modern-php-techie is not done.
 
 #### The solution
-This library will help you to manage number in your codebase. Using the `Number` class you can typhint them 
+This library will help you to manage number in your codebase. Using the `Number` class you can typehint them 
 (`getTotal(Number $quantity)`) and make calculations on the number itself (`$number->sum('200')'`). Since those methods
 are immutable you can chain your methods on them. 
 
 #### Scope
-This library aims to make your code cleaner. You can typehint the `Number` class, and you can make cleaner calculations.
-We have chosen not to support specific implementations of numbers like Money. This is too specific and out of scope.
-Instead, you can create custom `Number` implementations and create your own `format` method. This way, you can be even 
-more specific with your types, which is all of your responsibility.
+This library aims to make your code cleaner. You can typehint the `Number` class, and you can make cleaner calculations 
+(still using BC Math in the background).
+
+We have chosen not to support specific implementations of numbers like money and weights. This is too specific and out of scope.
+Mainly, custom implementations of numbers are business specific. In our opinion you should create them yourself, according
+to the desired needs of your business.
 
 ## Table of Contents
 - [Installation](#installation)
@@ -37,7 +40,7 @@ more specific with your types, which is all of your responsibility.
     - [Modulus](#modulus)
     - [State & Comparison](#state--comparison)
     - [Immutable & Chaining](#immutable--chaining)
-    - [Custom implementations](#custom-implementations)
+    - [Extensibility](#extensibility)
 - [Testing](#testing--php-cs-fixer)
 - [Changelog](#changelog)
 - [Contributing](#contributing)
@@ -101,6 +104,12 @@ To divide your current number instance into the given number:
 $total = $number
     ->divide('200')
     ->div('200'); // div is an alias for divide
+```
+
+Division by zero is not possible, of course. To not break your chain, a fallback value can be used like this:
+
+``` php
+$total = $number->divide($variable, null, '1.000');
 ```
 
 ### Multiply
@@ -177,34 +186,13 @@ $result = $number
     ->toString();
 ```
 
-## Custom implementations
-We encourage you to create custom implementations of the `AbstractNumber` class for specific use cases. This enables you 
-to type hint much better which type of number you expect. A nice example is a custom `Money` class:
+## Extensibility
+We encourage you to create custom implementations of the `AbstractNumber` class for your specific use cases.  This enables 
+you to type hint much better which type of number you expect and how they should be formatted.
 
-``` php
-class Money extends AbstractNumber
-{
-    public function format(string $isoCode): string
-    {
-        return Formatter::formatMoney($this->get(), $isoCode);
-    }
-}
-```
-
-Now you can easily specify your types much better e.g.:
-
-```php
-public function calculateVatAmount(Money $amount, Number $percentage): Money
-{
-    $vatAmount = $amount->divide(100, 0)->multiply($percentage);
-
-    if ($vatAmount->isNegative()) {
-        return Money::create(0);
-    }
-
-    return $vatAmount;
-}
-```
+[PHP Number - Examples](https://github.com/madebybob/php-number-examples) is a repository dedicated to showing how a custom 
+number type like weights should be implemented. Please check out this repository for further documentation about the 
+extensibility of this package.
 
 ## Testing & Php CS Fixer 
 ``` bash
