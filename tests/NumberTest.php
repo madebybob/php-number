@@ -545,22 +545,29 @@ class NumberTest extends TestCase
         $number = new Number('4.4770');
         $this->assertEquals('4.4800', $number->round(2));
 
-        // $number = new Number('4200.0000');
-        // $this->assertEquals('4000.0000', $number->round(-3));
+        $number = new Number('4200.0000');
+        $this->assertEquals('4000.0000', $number->round(-3));
+
+        $number = new Number('46000.0000');
+        $this->assertEquals('50000.0000', $number->round(-4));
     }
 
     public function testCeil(): void
     {
         $number = new Number('4.1000');
-
         $this->assertEquals('5.0000', $number->ceil()->toString());
+
+        $number = new Number('-4.1000');
+        $this->assertEquals('-4.0000', $number->ceil()->toString());
     }
 
     public function testFloor(): void
     {
         $number = new Number('4.9000');
-
         $this->assertEquals('4.0000', $number->floor()->toString());
+
+        $number = new Number('-4.9000');
+        $this->assertEquals('-5.0000', $number->floor()->toString());
     }
 
     public function testCanTraceByParent(): void

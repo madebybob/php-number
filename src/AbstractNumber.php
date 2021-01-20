@@ -7,11 +7,23 @@ namespace Number;
 use Number\Exception\DecimalExponentError;
 use Number\Exception\DivisionByZeroError;
 use Number\Exception\InvalidNumberInputTypeException;
+use Number\Exception\InvalidRoundingModeException;
 
 abstract class AbstractNumber
 {
     protected const INTERNAL_SCALE = 12;
     protected const DEFAULT_SCALE = 4;
+
+    public const ROUND_HALF_UP = 1;
+    public const ROUND_HALF_DOWN = 2;
+    public const ROUND_HALF_EVEN = 3;
+    public const ROUND_HALF_ODD = 4;
+    private const ROUNDING_MODES = [
+        self::ROUND_HALF_UP => self::ROUND_HALF_UP,
+        self::ROUND_HALF_DOWN => self::ROUND_HALF_DOWN,
+        self::ROUND_HALF_EVEN => self::ROUND_HALF_EVEN,
+        self::ROUND_HALF_ODD => self::ROUND_HALF_ODD,
+    ];
 
     protected string $value;
     protected ?self $parent;
@@ -325,45 +337,30 @@ abstract class AbstractNumber
      * Rounds the current number, with a given precision (default 0).
      *
      * @param int $precision
-     * @return $this
      */
-    public function round(int $precision = 0): self
+    public function round(int $precision = 0, int $mode = self::ROUND_HALF_UP): self
     {
-        if ($this->isNegative()) {
-            return $this->subtract('0.' . str_repeat('0', $precision) . '5', $precision);
+        if (in_array($mode, self::ROUNDING_MODES) === false) {
+            throw new InvalidRoundingModeException();
         }
 
-        return $this->add('0.' . str_repeat('0', $precision) . '5', $precision);
+        return $this->init((string) round((float) $this->value, $precision, $mode));
     }
 
     /**
      * Ceils the current number.
-     *
-     * @return $this
      */
     public function ceil(): self
     {
-        $result = 1;
-        if (static::isNegative()) {
-            --$result;
-        }
-
-        return $this->add($result, 0);
+        return $this->init((string) ceil((float) $this->value));
     }
 
     /**
      * Floors the current number.
-     *
-     * @return $this
      */
     public function floor(): self
     {
-        $result = 0;
-        if (static::isNegative()) {
-            --$result;
-        }
-
-        return $this->add($result, 0);
+        return $this->init((string) floor((float) $this->value));
     }
 
     /**
