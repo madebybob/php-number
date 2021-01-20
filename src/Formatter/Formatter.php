@@ -20,7 +20,7 @@ abstract class Formatter
             NumberFormatter::MAX_FRACTION_DIGITS => $maxFractionDigits,
         ];
 
-        return self::get(NumberFormatter::DECIMAL, $locale, $options)->format($value);
+        return self::get(NumberFormatter::DECIMAL, $locale, $options)->format((float) $value);
     }
 
     /**
