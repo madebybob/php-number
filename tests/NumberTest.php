@@ -547,7 +547,6 @@ class NumberTest extends TestCase
 
         // $number = new Number('4200.0000');
         // $this->assertEquals('4000.0000', $number->round(-3));
-
     }
 
     public function testCeil(): void
