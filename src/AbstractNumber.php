@@ -322,6 +322,51 @@ abstract class AbstractNumber
     }
 
     /**
+     * Rounds the current number, with a given precision (default 0).
+     *
+     * @param int $precision
+     * @return $this
+     */
+    public function round(int $precision = 0): self
+    {
+        if ($this->isNegative()) {
+            return $this->subtract('0.' . str_repeat('0', $precision) . '5', $precision);
+        }
+
+        return $this->add('0.' . str_repeat('0', $precision) . '5', $precision);
+    }
+
+    /**
+     * Ceils the current number.
+     *
+     * @return $this
+     */
+    public function ceil(): self
+    {
+        $result = 1;
+        if (static::isNegative()) {
+            --$result;
+        }
+
+        return $this->add($result, 0);
+    }
+
+    /**
+     * Floors the current number.
+     *
+     * @return $this
+     */
+    public function floor(): self
+    {
+        $result = 0;
+        if (static::isNegative()) {
+            --$result;
+        }
+
+        return $this->add($result, 0);
+    }
+
+    /**
      * Returns it's parent by which this instance was initialized.
      */
     public function parent(): ?self

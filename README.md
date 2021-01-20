@@ -39,6 +39,7 @@ to the desired needs of your business.
     - [Multiply](#multiply)
     - [Modulus](#modulus)
     - [State & Comparison](#state--comparison)
+    - [Rounding](#rounding)
     - [Immutable & Chaining](#immutable--chaining)
     - [Extensibility](#extensibility)
 - [Testing](#testing--php-cs-fixer)
@@ -162,6 +163,22 @@ $number->isEqual('200');
 
 // check if the number is zero ("0")
 $number->isZero();
+```
+
+### Rounding
+To round the current number instance, the following methods are available:
+
+``` php
+$number = new Number('200.5000');
+
+// rounds the number to '201.0000'
+$number->round();
+
+// ceils the number to '201.0000'
+$number->ceil();
+
+// floors the number to '200.0000'
+$number->floor();
 ```
 
 ### Immutable & Chaining
