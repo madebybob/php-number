@@ -588,6 +588,12 @@ class NumberTest extends TestCase
 
     public function testFormatNumber(): void
     {
+        if (extension_loaded('intl') === false) {
+            $this->markTestSkipped('Intl extension not loaded.');
+
+            return;
+        }
+
         Locale::setDefault('nl_NL');
 
         // Round up, default 4 fraction digits

@@ -28,6 +28,12 @@ class AbstractNumberImplementationTest extends TestCase
 
     public function testFormatAbstractNumberImplementation(): void
     {
+        if (extension_loaded('intl') === false) {
+            $this->markTestSkipped('Intl extension not loaded.');
+
+            return;
+        }
+
         Locale::setDefault('nl_NL');
 
         $money = new Money('9342.1539');
