@@ -2,6 +2,10 @@
 
 All notable changes to `php-number` will be documented in this file
 
+## 1.3.0
+- Added `round`, `ceil` & `floor` method in `AbstractNumber`
+- Improved unit tests when Intl extension is not loaded
+
 ## 1.2.0 - 2021-01-20
 - Added PHP 8 support + type fix ([#8](https://github.com/madebybob/php-number/pull/8) by [@affektde](https://github.com/affektde))
 

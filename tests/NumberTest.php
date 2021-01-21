@@ -522,6 +522,57 @@ class NumberTest extends TestCase
         $this->assertFalse($five->isEqual('5.0001'));
     }
 
+    public function testRound(): void
+    {
+        $this->assertEquals('5.0000', Number::create('4.900')->round(0)->toString());
+        $this->assertEquals('4.0000', Number::create('4.1000')->round(0)->toString());
+        $this->assertEquals('4.0000', Number::create('4.4900')->round(0)->toString());
+        $this->assertEquals('5.0000', Number::create('4.5000')->round(0)->toString());
+        $this->assertEquals('5.0000', Number::create('4.5100')->round(0)->toString());
+
+        $this->assertEquals('4.4700', Number::create('4.4720')->round(2)->toString());
+        $this->assertEquals('4.4800', Number::create('4.4770')->round(2)->toString());
+
+        $this->assertEquals('8.4780', Number::create('8.4776')->round(3)->toString());
+        $this->assertEquals('8.4770', Number::create('8.4772')->round(3)->toString());
+
+        $this->assertEquals('4000.0000', Number::create('4200.0000')->round(-3)->toString());
+        $this->assertEquals('50000.0000', Number::create('46000.0000')->round(-4)->toString());
+
+        $this->assertEquals('-5.0000', Number::create('-4.900')->round(0)->toString());
+        $this->assertEquals('-4.0000', Number::create('-4.1000')->round(0)->toString());
+        $this->assertEquals('-4.0000', Number::create('-4.4900')->round(0)->toString());
+        $this->assertEquals('-5.0000', Number::create('-4.5000')->round(0)->toString());
+        $this->assertEquals('-5.0000', Number::create('-4.5100')->round(0)->toString());
+
+        $this->assertEquals('-4.4700', Number::create('-4.4720')->round(2)->toString());
+        $this->assertEquals('-4.4800', Number::create('-4.4770')->round(2)->toString());
+
+        $this->assertEquals('-8.4780', Number::create('-8.4776')->round(3)->toString());
+        $this->assertEquals('-8.4770', Number::create('-8.4772')->round(3)->toString());
+
+        $this->assertEquals('-4000.0000', Number::create('-4200.0000')->round(-3)->toString());
+        $this->assertEquals('-50000.0000', Number::create('-46000.0000')->round(-4)->toString());
+    }
+
+    public function testCeil(): void
+    {
+        $this->assertEquals('5.0000', Number::create('4.1000')->ceil()->toString());
+        $this->assertEquals('5.0000', Number::create('4.8000')->ceil()->toString());
+
+        $this->assertEquals('-4.0000', Number::create('-4.1000')->ceil()->toString());
+        $this->assertEquals('-4.0000', Number::create('-4.8000')->ceil()->toString());
+    }
+
+    public function testFloor(): void
+    {
+        $this->assertEquals('4.0000', Number::create('4.9000')->floor()->toString());
+        $this->assertEquals('4.0000', Number::create('4.1000')->floor()->toString());
+
+        $this->assertEquals('-5.0000', Number::create('-4.9000')->floor()->toString());
+        $this->assertEquals('-5.0000', Number::create('-4.1000')->floor()->toString());
+    }
+
     public function testCanTraceByParent(): void
     {
         $five = new Number(5);
@@ -540,6 +591,12 @@ class NumberTest extends TestCase
 
     public function testFormatNumber(): void
     {
+        if (extension_loaded('intl') === false) {
+            $this->markTestSkipped('Intl extension not loaded.');
+
+            return;
+        }
+
         Locale::setDefault('nl_NL');
 
         // Round up, default 4 fraction digits

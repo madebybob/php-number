@@ -7,11 +7,23 @@ namespace Number;
 use Number\Exception\DecimalExponentError;
 use Number\Exception\DivisionByZeroError;
 use Number\Exception\InvalidNumberInputTypeException;
+use Number\Exception\InvalidRoundingModeException;
 
 abstract class AbstractNumber
 {
     protected const INTERNAL_SCALE = 12;
     protected const DEFAULT_SCALE = 4;
+
+    public const ROUND_HALF_UP = 1;
+    public const ROUND_HALF_DOWN = 2;
+    public const ROUND_HALF_EVEN = 3;
+    public const ROUND_HALF_ODD = 4;
+    private const ROUNDING_MODES = [
+        self::ROUND_HALF_UP => self::ROUND_HALF_UP,
+        self::ROUND_HALF_DOWN => self::ROUND_HALF_DOWN,
+        self::ROUND_HALF_EVEN => self::ROUND_HALF_EVEN,
+        self::ROUND_HALF_ODD => self::ROUND_HALF_ODD,
+    ];
 
     protected string $value;
     protected ?self $parent;
@@ -319,6 +331,34 @@ abstract class AbstractNumber
         $scale = $scale ?? self::INTERNAL_SCALE;
 
         return bccomp($this->value, $number->get(), $scale) === 0;
+    }
+
+    /**
+     * Rounds the current number, with a given precision (default 0).
+     */
+    public function round(int $precision = 0, int $mode = self::ROUND_HALF_UP): self
+    {
+        if (in_array($mode, self::ROUNDING_MODES) === false) {
+            throw new InvalidRoundingModeException();
+        }
+
+        return $this->init((string) round((float) $this->value, $precision, $mode));
+    }
+
+    /**
+     * Ceils the current number.
+     */
+    public function ceil(): self
+    {
+        return $this->init((string) ceil((float) $this->value));
+    }
+
+    /**
+     * Floors the current number.
+     */
+    public function floor(): self
+    {
+        return $this->init((string) floor((float) $this->value));
     }
 
     /**
