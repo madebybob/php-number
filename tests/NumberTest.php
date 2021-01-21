@@ -524,50 +524,53 @@ class NumberTest extends TestCase
 
     public function testRound(): void
     {
-        $number = new Number('4.9000');
-        $this->assertEquals('5', $number->round(0));
+        $this->assertEquals('5.0000', Number::create('4.900')->round(0)->toString());
+        $this->assertEquals('4.0000', Number::create('4.1000')->round(0)->toString());
+        $this->assertEquals('4.0000', Number::create('4.4900')->round(0)->toString());
+        $this->assertEquals('5.0000', Number::create('4.5000')->round(0)->toString());
+        $this->assertEquals('5.0000', Number::create('4.5100')->round(0)->toString());
 
-        $number = new Number('4.1000');
-        $this->assertEquals('4', $number->round(0));
+        $this->assertEquals('4.4700', Number::create('4.4720')->round(2)->toString());
+        $this->assertEquals('4.4800', Number::create('4.4770')->round(2)->toString());
 
-        $number = new Number('4.4900');
-        $this->assertEquals('4', $number->round(0));
+        $this->assertEquals('8.4780', Number::create('8.4776')->round(3)->toString());
+        $this->assertEquals('8.4770', Number::create('8.4772')->round(3)->toString());
 
-        $number = new Number('4.5000');
-        $this->assertEquals('5', $number->round(0));
+        $this->assertEquals('4000.0000', Number::create('4200.0000')->round(-3)->toString());
+        $this->assertEquals('50000.0000', Number::create('46000.0000')->round(-4)->toString());
 
-        $number = new Number('4.5100');
-        $this->assertEquals('5', $number->round(0));
+        $this->assertEquals('-5.0000', Number::create('-4.900')->round(0)->toString());
+        $this->assertEquals('-4.0000', Number::create('-4.1000')->round(0)->toString());
+        $this->assertEquals('-4.0000', Number::create('-4.4900')->round(0)->toString());
+        $this->assertEquals('-5.0000', Number::create('-4.5000')->round(0)->toString());
+        $this->assertEquals('-5.0000', Number::create('-4.5100')->round(0)->toString());
 
-        $number = new Number('4.4720');
-        $this->assertEquals('4.4700', $number->round(2));
+        $this->assertEquals('-4.4700', Number::create('-4.4720')->round(2)->toString());
+        $this->assertEquals('-4.4800', Number::create('-4.4770')->round(2)->toString());
 
-        $number = new Number('4.4770');
-        $this->assertEquals('4.4800', $number->round(2));
+        $this->assertEquals('-8.4780', Number::create('-8.4776')->round(3)->toString());
+        $this->assertEquals('-8.4770', Number::create('-8.4772')->round(3)->toString());
 
-        $number = new Number('4200.0000');
-        $this->assertEquals('4000.0000', $number->round(-3));
-
-        $number = new Number('46000.0000');
-        $this->assertEquals('50000.0000', $number->round(-4));
+        $this->assertEquals('-4000.0000', Number::create('-4200.0000')->round(-3)->toString());
+        $this->assertEquals('-50000.0000', Number::create('-46000.0000')->round(-4)->toString());
     }
 
     public function testCeil(): void
     {
-        $number = new Number('4.1000');
-        $this->assertEquals('5.0000', $number->ceil()->toString());
+        $this->assertEquals('5.0000', Number::create('4.1000')->ceil()->toString());
+        $this->assertEquals('5.0000', Number::create('4.8000')->ceil()->toString());
 
-        $number = new Number('-4.1000');
-        $this->assertEquals('-4.0000', $number->ceil()->toString());
+        $this->assertEquals('-4.0000', Number::create('-4.1000')->ceil()->toString());
+        $this->assertEquals('-4.0000', Number::create('-4.8000')->ceil()->toString());
     }
 
     public function testFloor(): void
     {
-        $number = new Number('4.9000');
-        $this->assertEquals('4.0000', $number->floor()->toString());
+        $this->assertEquals('4.0000', Number::create('4.9000')->floor()->toString());
+        $this->assertEquals('4.0000', Number::create('4.1000')->floor()->toString());
 
-        $number = new Number('-4.9000');
-        $this->assertEquals('-5.0000', $number->floor()->toString());
+        $this->assertEquals('-5.0000', Number::create('-4.9000')->floor()->toString());
+        $this->assertEquals('-5.0000', Number::create('-4.1000')->floor()->toString());
     }
 
     public function testCanTraceByParent(): void

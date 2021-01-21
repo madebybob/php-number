@@ -335,8 +335,6 @@ abstract class AbstractNumber
 
     /**
      * Rounds the current number, with a given precision (default 0).
-     *
-     * @param int $precision
      */
     public function round(int $precision = 0, int $mode = self::ROUND_HALF_UP): self
     {
