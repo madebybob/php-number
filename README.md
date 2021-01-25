@@ -226,6 +226,9 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 ## Contributing
 Please see [CONTRIBUTING](.github/CONTRIBUTING.md) for details.
 
+## Supporters
+[![Stargazers repo roster for @madebybob/php-number](https://reporoster.com/stars/madebybob/php-number)](https://github.com/madebybob/php-number/stargazers)
+
 ## Credits
 - [Bob Mulder](https://github.com/bobmulder)
 - [Jon Mulder](https://github.com/jonmldr)
