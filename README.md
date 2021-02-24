@@ -39,6 +39,7 @@ to the desired needs of your business.
     - [Multiply](#multiply)
     - [Modulus](#modulus)
     - [State & Comparison](#state--comparison)
+    - [Absolute values](#absolute-values)
     - [Rounding](#rounding)
     - [Immutable & Chaining](#immutable--chaining)
     - [Extensibility](#extensibility)
@@ -163,6 +164,19 @@ $number->isEqual('200');
 
 // check if the number is zero ("0")
 $number->isZero();
+```
+
+### Absolute values
+To get the absolute (positive) value of the current instance:
+
+``` php
+$number = new Number('-200');
+
+// $absolute will be 200
+$absolute = $number->absolute();
+
+// abs is an alias for absolute
+$abs = $number->abs();
 ```
 
 ### Rounding
