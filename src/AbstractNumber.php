@@ -283,6 +283,22 @@ abstract class AbstractNumber
     }
 
     /**
+     * Get the opposite value of the current value.
+     */
+    public function opposite(): self
+    {
+        return $this->multiply(-1);
+    }
+
+    /**
+     * Alias for opposite method.
+     */
+    public function opp(): self
+    {
+        return $this->opposite();
+    }
+
+    /**
      * Return boolean if the current value is a positive number.
      */
     public function isPositive(): bool

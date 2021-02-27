@@ -473,6 +473,21 @@ class NumberTest extends TestCase
         $this->assertEquals('0.3000', Number::create('0.3000')->absolute()->toString());
     }
 
+    public function testOpposite()
+    {
+        $this->assertEquals('0.0000', Number::create('-0')->opposite()->toString());
+        $this->assertEquals('0.0000', Number::create('0')->opposite()->toString());
+
+        $this->assertEquals('14.0000', Number::create('-14.0000')->opposite()->toString());
+        $this->assertEquals('-14.0000', Number::create('14.0000')->opposite()->toString());
+
+        $this->assertEquals('20.0000', Number::create('-20')->opposite()->toString());
+        $this->assertEquals('-20.0000', Number::create('20')->opposite()->toString());
+
+        $this->assertEquals('0.3000', Number::create('-0.3000')->opposite()->toString());
+        $this->assertEquals('-0.3000', Number::create('0.3000')->opposite()->toString());
+    }
+
     public function testIsPositive(): void
     {
         $this->assertTrue((new Number('200'))->isPositive());

@@ -39,7 +39,7 @@ to the desired needs of your business.
     - [Multiply](#multiply)
     - [Modulus](#modulus)
     - [State & Comparison](#state--comparison)
-    - [Absolute values](#absolute-values)
+    - [Absolute & opposite values](#absolute--opposite-values)
     - [Rounding](#rounding)
     - [Immutable & Chaining](#immutable--chaining)
     - [Extensibility](#extensibility)
@@ -166,7 +166,7 @@ $number->isEqual('200');
 $number->isZero();
 ```
 
-### Absolute values
+### Absolute & opposite values
 To get the absolute (positive) value of the current instance:
 
 ``` php
@@ -177,6 +177,18 @@ $absolute = $number->absolute();
 
 // abs is an alias for absolute
 $abs = $number->abs();
+```
+
+To get the opposite value of the current instance:
+
+``` php
+$number = new Number('200');
+
+// $absolute will be -200
+$absolute = $number->opposite();
+
+// opp is an alias for absolute
+$abs = $number->opp();
 ```
 
 ### Rounding
