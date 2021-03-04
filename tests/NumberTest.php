@@ -458,10 +458,41 @@ class NumberTest extends TestCase
         $this->assertEquals('14', $number->sqrt(0));
     }
 
+    public function testAbsolute()
+    {
+        $this->assertEquals('0.0000', Number::create('-0')->absolute()->toString());
+        $this->assertEquals('0.0000', Number::create('0')->absolute()->toString());
+
+        $this->assertEquals('14.0000', Number::create('-14.0000')->absolute()->toString());
+        $this->assertEquals('14.0000', Number::create('14.0000')->absolute()->toString());
+
+        $this->assertEquals('20.0000', Number::create('-20')->absolute()->toString());
+        $this->assertEquals('20.0000', Number::create('20')->absolute()->toString());
+
+        $this->assertEquals('0.3000', Number::create('-0.3000')->absolute()->toString());
+        $this->assertEquals('0.3000', Number::create('0.3000')->absolute()->toString());
+    }
+
+    public function testOpposite()
+    {
+        $this->assertEquals('0.0000', Number::create('-0')->opposite()->toString());
+        $this->assertEquals('0.0000', Number::create('0')->opposite()->toString());
+
+        $this->assertEquals('14.0000', Number::create('-14.0000')->opposite()->toString());
+        $this->assertEquals('-14.0000', Number::create('14.0000')->opposite()->toString());
+
+        $this->assertEquals('20.0000', Number::create('-20')->opposite()->toString());
+        $this->assertEquals('-20.0000', Number::create('20')->opposite()->toString());
+
+        $this->assertEquals('0.3000', Number::create('-0.3000')->opposite()->toString());
+        $this->assertEquals('-0.3000', Number::create('0.3000')->opposite()->toString());
+    }
+
     public function testIsPositive(): void
     {
         $this->assertTrue((new Number('200'))->isPositive());
         $this->assertTrue((new Number('1'))->isPositive());
+        $this->assertTrue((new Number('0.3000'))->isPositive());
 
         $this->assertFalse((new Number('200'))->isNegative());
         $this->assertFalse((new Number('1'))->isNegative());

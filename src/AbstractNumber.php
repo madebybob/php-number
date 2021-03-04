@@ -263,11 +263,47 @@ abstract class AbstractNumber
     }
 
     /**
+     * Get the absolute value of the current value.
+     */
+    public function absolute(): self
+    {
+        if ($this->isPositive()) {
+            return $this;
+        }
+
+        return $this->multiply(-1);
+    }
+
+    /**
+     * Alias for absolute method.
+     */
+    public function abs(): self
+    {
+        return $this->absolute();
+    }
+
+    /**
+     * Get the opposite value of the current value.
+     */
+    public function opposite(): self
+    {
+        return $this->multiply(-1);
+    }
+
+    /**
+     * Alias for opposite method.
+     */
+    public function opp(): self
+    {
+        return $this->opposite();
+    }
+
+    /**
      * Return boolean if the current value is a positive number.
      */
     public function isPositive(): bool
     {
-        return bccomp($this->value, '0') === 1;
+        return bccomp($this->value, '0', self::INTERNAL_SCALE) === 1;
     }
 
     /**
@@ -275,7 +311,7 @@ abstract class AbstractNumber
      */
     public function isNegative(): bool
     {
-        return bccomp($this->value, '0') === -1;
+        return bccomp($this->value, '0', self::INTERNAL_SCALE) === -1;
     }
 
     /**
