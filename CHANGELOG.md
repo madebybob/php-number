@@ -2,6 +2,11 @@
 
 All notable changes to `php-number` will be documented in this file
 
+## 1.4.0 - 2021-03-04
+
+- Added `absolute` and `opposite` methods in `AbstractNumber` ([#10](https://github.com/madebybob/php-number/pull/10))
+- Fixed bug in `isPositive` method ([#10](https://github.com/madebybob/php-number/pull/10))
+
 ## 1.3.0 - 2021-01-21
 - Added `round`, `ceil` & `floor` method in `AbstractNumber`
 - Improved unit tests when Intl extension is not loaded
