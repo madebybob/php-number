@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Number\Formatter;
+namespace MadeByBob\Number\Formatter;
 
 use Locale;
 use NumberFormatter;

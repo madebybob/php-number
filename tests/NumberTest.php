@@ -1,12 +1,12 @@
 <?php
 
-namespace Number\Tests;
+namespace MadeByBob\Number\Tests;
 
 use Locale;
-use Number\Exception\DecimalExponentError;
-use Number\Exception\DivisionByZeroError;
-use Number\Exception\InvalidNumberInputTypeException;
-use Number\Number;
+use MadeByBob\Number\Exception\DecimalExponentError;
+use MadeByBob\Number\Exception\DivisionByZeroError;
+use MadeByBob\Number\Exception\InvalidNumberInputTypeException;
+use MadeByBob\Number\Number;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 

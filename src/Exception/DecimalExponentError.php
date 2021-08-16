@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Number\Exception;
+namespace MadeByBob\Number\Exception;
 
 use ArithmeticError;
 

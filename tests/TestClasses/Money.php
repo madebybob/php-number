@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Number\Tests\TestClasses;
+namespace MadeByBob\Number\Tests\TestClasses;
 
-use Number\AbstractNumber;
-use Number\Formatter\Formatter;
+use MadeByBob\Number\AbstractNumber;
+use MadeByBob\Number\Formatter\Formatter;
 
 class Money extends AbstractNumber
 {

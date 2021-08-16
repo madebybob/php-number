@@ -6,7 +6,7 @@ grumphp:
         allow_risky: false
         cache_file: ~
         rules: []
-        config: .php_cs.dist
+        config: .php-cs-fixer.dist.php
         using_cache: ~
         config_contains_finder: true
         verbose: true

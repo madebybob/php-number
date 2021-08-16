@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Number;
+namespace MadeByBob\Number;
 
-use Number\Exception\DecimalExponentError;
-use Number\Exception\DivisionByZeroError;
-use Number\Exception\InvalidNumberInputTypeException;
-use Number\Exception\InvalidRoundingModeException;
+use MadeByBob\Number\Exception\DecimalExponentError;
+use MadeByBob\Number\Exception\DivisionByZeroError;
+use MadeByBob\Number\Exception\InvalidNumberInputTypeException;
+use MadeByBob\Number\Exception\InvalidRoundingModeException;
 
 abstract class AbstractNumber
 {
@@ -112,7 +112,7 @@ abstract class AbstractNumber
      *
      * Example:
      * ```
-     *   $divided = (new Number('200.000'))->divide($value, null, '0.0000')
+     *   $divided = (new MadeByBob\Number('200.000'))->divide($value, null, '0.0000')
      * ```
      *
      * @param AbstractNumber|string|float|int $value
@@ -406,7 +406,7 @@ abstract class AbstractNumber
     }
 
     /**
-     * Converts the current Number instance into a string.
+     * Converts the current MadeByBob\Number instance into a string.
      */
     public function toString(int $scale = null): string
     {
@@ -416,7 +416,7 @@ abstract class AbstractNumber
     }
 
     /**
-     * Converts the current Number instance into a string.
+     * Converts the current MadeByBob\Number instance into a string.
      */
     public function __toString(): string
     {
@@ -432,7 +432,7 @@ abstract class AbstractNumber
     }
 
     /**
-     * @internal Provides an instance of Number based on the input. Supports multiple input data types.
+     * @internal Provides an instance of MadeByBob\Number based on the input. Supports multiple input data types.
      *
      * @param AbstractNumber|string|float|int $value
      */
