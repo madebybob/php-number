@@ -1,9 +1,9 @@
 <?php
 
-namespace Number\Tests;
+namespace MadeByBob\Number\Tests;
 
 use Locale;
-use Number\Tests\TestClasses\Money;
+use MadeByBob\Number\Tests\TestClasses\Money;
 use PHPUnit\Framework\TestCase;
 
 class AbstractNumberImplementationTest extends TestCase
