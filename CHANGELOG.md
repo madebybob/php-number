@@ -2,6 +2,10 @@
 
 All notable changes to `php-number` will be documented in this file
 
+## 2.0.0 - 2021-08-16
+
+- Change root namespace from `Number` to `MadeByBob/Number` ([#12](https://github.com/madebybob/php-number/pull/12))
+
 ## 1.4.0 - 2021-03-04
 
 - Added `absolute` and `opposite` methods in `AbstractNumber` ([#10](https://github.com/madebybob/php-number/pull/10))
