@@ -299,6 +299,54 @@ abstract class AbstractNumber
     }
 
     /**
+     * Prevent the current value to be less than the given value.
+     *
+     * @param AbstractNumber|string|float|int $value
+     */
+    public function min($value = null): self
+    {
+        $value = $this->getNumberFromInput($value);
+
+        if ($this->isLessThan($value)) {
+            return $this->init((string) $value);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Prevent the current value to be more than the given value.
+     *
+     * @param AbstractNumber|string|float|int $value
+     */
+    public function max($value = null): self
+    {
+        $value = $this->getNumberFromInput($value);
+
+        if ($this->isGreaterThan($value)) {
+            return $this->init((string) $value);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Put a clamp on the current value.
+     *
+     * @param AbstractNumber|string|float|int $min
+     * @param AbstractNumber|string|float|int $max
+     */
+    public function clamp($min, $max): self
+    {
+        $result = $this;
+
+        $result = $result->min($min);
+        $result = $result->max($max);
+
+        return $this->init((string) $result);
+    }
+
+    /**
      * Return boolean if the current value is a positive number.
      */
     public function isPositive(): bool
