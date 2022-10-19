@@ -13,10 +13,10 @@ jobs:
           ref: ${{ github.head_ref }}
 
       - name: Setup PHP
-          uses: shivammathur/setup-php@v2
-          with:
-            php-version: '8.0'
-            coverage: none
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+          coverage: none
 
       - name: Run composer install
         run: composer install -n --prefer-dist
