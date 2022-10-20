@@ -12,17 +12,13 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.0'
-          coverage: none
-
       - name: Run composer install
         run: composer install -n --prefer-dist
 
       - name: Run PHP CS Fixer
-        run: composer format
+          uses: docker://oskarstark/php-cs-fixer-ga
+          with:
+            args: --config=.php-cs-fixer.dist.php --allow-risky=yes
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
