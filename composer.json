@@ -45,7 +45,8 @@
     "config": {
         "sort-packages": true,
         "allow-plugins": {
-            "phpro/grumphp": true
+            "phpro/grumphp": true,
+            "ocramius/package-versions": true
         }
     },
     "minimum-stability": "dev",
