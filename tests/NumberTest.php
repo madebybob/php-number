@@ -548,9 +548,22 @@ class NumberTest extends TestCase
         $this->assertFalse((new Number('0.000000085'))->isZero());
     }
 
+    public function testIsEqual(): void
+    {
+        $five = new Number(5);
+
+        $this->assertTrue($five->isEqual('5'));
+        $this->assertTrue($five->isEqual('5.0000'));
+
+        $this->assertFalse($five->isEqual('-5'));
+        $this->assertFalse($five->isEqual('4.9999'));
+        $this->assertFalse($five->isEqual('5.0001'));
+    }
+
     public function testIsGreaterThan(): void
     {
         $five = new Number(5);
+
         $this->assertTrue($five->isGreaterThan('3'));
         $this->assertFalse($five->isGreaterThan('7'));
 
@@ -559,9 +572,24 @@ class NumberTest extends TestCase
         $this->assertFalse($five->isGreaterThan('5.0001'));
     }
 
+    public function testIsGreaterThanOrEqual(): void
+    {
+        $five = new Number(5);
+
+        $this->assertTrue($five->isGreaterThanOrEqual('5'));
+
+        $this->assertTrue($five->isGreaterThanOrEqual('3'));
+        $this->assertFalse($five->isGreaterThanOrEqual('7'));
+
+        $this->assertTrue($five->isGreaterThanOrEqual('-500'));
+        $this->assertTrue($five->isGreaterThanOrEqual('4.9999'));
+        $this->assertFalse($five->isGreaterThanOrEqual('5.0001'));
+    }
+
     public function testIsLessThan(): void
     {
         $five = new Number(5);
+
         $this->assertFalse($five->isLessThan('3'));
         $this->assertTrue($five->isLessThan('7'));
 
@@ -570,15 +598,18 @@ class NumberTest extends TestCase
         $this->assertTrue($five->isLessThan('5.0001'));
     }
 
-    public function testIsEqual(): void
+    public function testIsLessThanOrEqual(): void
     {
         $five = new Number(5);
-        $this->assertTrue($five->isEqual('5'));
-        $this->assertTrue($five->isEqual('5.0000'));
 
-        $this->assertFalse($five->isEqual('-5'));
-        $this->assertFalse($five->isEqual('4.9999'));
-        $this->assertFalse($five->isEqual('5.0001'));
+        $this->assertTrue($five->isLessThanOrEqual('5'));
+
+        $this->assertFalse($five->isLessThanOrEqual('3'));
+        $this->assertTrue($five->isLessThanOrEqual('7'));
+
+        $this->assertFalse($five->isLessThanOrEqual('-500'));
+        $this->assertFalse($five->isLessThanOrEqual('4.9999'));
+        $this->assertTrue($five->isLessThanOrEqual('5.0001'));
     }
 
     public function testRound(): void

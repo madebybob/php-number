@@ -379,6 +379,29 @@ abstract class AbstractNumber
     }
 
     /**
+     * Returns boolean if the current value is equal to the given value.
+     *
+     * @param AbstractNumber|string|float|int $value
+     */
+    public function isEqual($value, int $scale = null): bool
+    {
+        $number = $this->getNumberFromInput($value);
+        $scale = $scale ?? self::INTERNAL_SCALE;
+
+        return bccomp($this->value, $number->get(), $scale) === 0;
+    }
+
+    /**
+     * Alias for isEqual method.
+     *
+     * @param AbstractNumber|string|float|int $value
+     */
+    public function eq($value, int $scale = null): bool
+    {
+        return $this->isEqual($value, $scale);
+    }
+
+    /**
      * Returns boolean if the current value is greater than the given value.
      *
      * @param AbstractNumber|string|float|int $value
@@ -389,6 +412,36 @@ abstract class AbstractNumber
         $scale = $scale ?? self::INTERNAL_SCALE;
 
         return bccomp($this->value, $number->get(), $scale) === 1;
+    }
+
+    /**
+     * Alias for isGreaterThan method.
+     *
+     * @param AbstractNumber|string|float|int $value
+     */
+    public function gt($value, int $scale = null): bool
+    {
+        return $this->isGreaterThan($value, $scale);
+    }
+
+    /**
+     * Returns boolean if the current value is greater than or equal to the given value.
+     *
+     * @param AbstractNumber|string|float|int $value
+     */
+    public function isGreaterThanOrEqual($value, int $scale = null): bool
+    {
+        return $this->isGreaterThan($value, $scale) || $this->isEqual($value, $scale);
+    }
+
+    /**
+     * Alias for isGreaterThanOrEqual method.
+     *
+     * @param AbstractNumber|string|float|int $value
+     */
+    public function gte($value, int $scale = null): bool
+    {
+        return $this->isGreaterThanOrEqual($value, $scale);
     }
 
     /**
@@ -405,16 +458,33 @@ abstract class AbstractNumber
     }
 
     /**
-     * Returns boolean if the current value is equal to the given value.
+     * Alias for isLessThan method.
      *
      * @param AbstractNumber|string|float|int $value
      */
-    public function isEqual($value, int $scale = null): bool
+    public function lt($value, int $scale = null): bool
     {
-        $number = $this->getNumberFromInput($value);
-        $scale = $scale ?? self::INTERNAL_SCALE;
+        return $this->isLessThan($value, $scale);
+    }
 
-        return bccomp($this->value, $number->get(), $scale) === 0;
+    /**
+     * Returns boolean if the current value is less than or equal to the given value.
+     *
+     * @param AbstractNumber|string|float|int $value
+     */
+    public function isLessThanOrEqual($value, int $scale = null): bool
+    {
+        return $this->isLessThan($value, $scale) || $this->isEqual($value, $scale);
+    }
+
+    /**
+     * Alias for isGreaterThanOrEqual method.
+     *
+     * @param AbstractNumber|string|float|int $value
+     */
+    public function lte($value, int $scale = null): bool
+    {
+        return $this->isLessThanOrEqual($value, $scale);
     }
 
     /**

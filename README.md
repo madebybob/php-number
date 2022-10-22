@@ -148,6 +148,10 @@ To compare two numbers with each other, these helpers are available, which will 
 ``` php
 $number = new Number('200');
 
+// check if the number is equal to x
+$number->isEqual('200');
+$number->eq('200');
+
 // check if the number is positive
 $number->isPositive();
 
@@ -156,12 +160,19 @@ $number->isNegative();
 
 // check if the number is greater than x
 $number->isGreaterThan('100');
+$number->gt('100');
+
+// check if the number is greater than or equal to x
+$number->isGreaterThanOrEqual('100');
+$number->gte('100');
 
 // check if the number is less than x
 $number->isLessThan('300');
+$number->lt('300');
 
-// check if the number is equal to x
-$number->isEqual('200');
+// check if the number is less than or equal to x
+$number->isLessThanOrEqual('300');
+$number->lte('300');
 
 // check if the number is zero ("0")
 $number->isZero();
