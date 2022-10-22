@@ -511,6 +511,7 @@ class NumberTest extends TestCase
         $number = new Number('200');
 
         $this->assertEquals('200.000', $number->clamp('100', '200'));
+        $this->assertEquals('200.000', $number->clamp('100', '300'));
         $this->assertEquals('100.000', $number->clamp('50', '100'));
         $this->assertEquals('250.000', $number->clamp('250', '300'));
     }
