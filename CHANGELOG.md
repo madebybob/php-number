@@ -2,6 +2,14 @@
 
 All notable changes to `php-number` will be documented in this file
 
+## 2.2.0 - 2022-10-22
+
+### What's Changed
+
+- Add `isGreaterThanOrEqual`, `isLessThanOrEqual`, `eq`, `gte` and `lte` by @bobmulder in https://github.com/madebybob/php-number/pull/15
+
+**Full Changelog**: https://github.com/madebybob/php-number/compare/2.1.1...2.2.0
+
 ## 2.1.1 - 2022-10-22
 
 - Fix update-changelog workflow
