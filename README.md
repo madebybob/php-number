@@ -40,6 +40,7 @@ to the desired needs of your business.
     - [Modulus](#modulus)
     - [State & Comparison](#state--comparison)
     - [Absolute & opposite values](#absolute--opposite-values)
+    - [Limiting values](#limiting-values)
     - [Rounding](#rounding)
     - [Immutable & Chaining](#immutable--chaining)
     - [Extensibility](#extensibility)
@@ -189,6 +190,28 @@ $absolute = $number->opposite();
 
 // opp is an alias for absolute
 $abs = $number->opp();
+```
+
+### Limiting values
+To make sure the current number is not higher or lower than expected:
+
+```php
+$number = new Number('200');
+
+// $result will be 250
+$result = $number->min('250');
+
+// $result will be 100
+$result = $number->max('100');
+```
+
+To use a min and max 'clamp' at the same time:
+
+```php
+$number = new Number('200');
+
+// $result will be 150
+$result = $number->clamp('100', '150');
 ```
 
 ### Rounding

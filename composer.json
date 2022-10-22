@@ -43,7 +43,11 @@
         "format": "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php --allow-risky=yes"
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "phpro/grumphp": true,
+            "ocramius/package-versions": true
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true

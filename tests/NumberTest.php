@@ -488,6 +488,34 @@ class NumberTest extends TestCase
         $this->assertEquals('-0.3000', Number::create('0.3000')->opposite()->toString());
     }
 
+    public function testMin()
+    {
+        $number = new Number('200');
+
+        $this->assertEquals('200.000', $number->min('200'));
+        $this->assertEquals('200.000', $number->min('150'));
+        $this->assertEquals('250.000', $number->min('250'));
+    }
+
+    public function testMax()
+    {
+        $number = new Number('200');
+
+        $this->assertEquals('200.000', $number->max('200'));
+        $this->assertEquals('150.000', $number->max('150'));
+        $this->assertEquals('200.000', $number->max('250'));
+    }
+
+    public function testClamp()
+    {
+        $number = new Number('200');
+
+        $this->assertEquals('200.000', $number->clamp('100', '200'));
+        $this->assertEquals('200.000', $number->clamp('100', '300'));
+        $this->assertEquals('100.000', $number->clamp('50', '100'));
+        $this->assertEquals('250.000', $number->clamp('250', '300'));
+    }
+
     public function testIsPositive(): void
     {
         $this->assertTrue((new Number('200'))->isPositive());
