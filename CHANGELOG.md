@@ -2,6 +2,14 @@
 
 All notable changes to `php-number` will be documented in this file
 
+## 2.2.2 - 2022-10-24
+
+### What's Changed
+
+- Fix dependencies for Vimeo and PHP CS to fix workflow
+
+﻿**Full Changelog**: https://github.com/madebybob/php-number/compare/2.2.1...2.2.2
+
 ## 2.2.1 - 2022-10-24
 
 ### What's Changed
