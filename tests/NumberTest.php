@@ -20,7 +20,7 @@ class NumberTest extends TestCase
 
     public function testCanInitializeFromString(): void
     {
-        $number = new Number('200');
+        $number = Number::create('200');
 
         $this->assertEquals('200.0000', $number->toString());
         $this->assertEquals('200.00', $number->toString(2));
@@ -29,13 +29,13 @@ class NumberTest extends TestCase
 
     public function testCanInitializeFromInteger(): void
     {
-        $number = new Number(200);
+        $number = Number::create(200);
 
         $this->assertEquals('200.0000', $number->toString());
         $this->assertEquals('200.00', $number->toString(2));
         $this->assertEquals('200', $number->toString(0));
 
-        $number = new Number(-200);
+        $number = Number::create(-200);
 
         $this->assertEquals('-200.0000', $number->toString());
         $this->assertEquals('-200.00', $number->toString(2));
@@ -44,23 +44,24 @@ class NumberTest extends TestCase
 
     public function testCanInitializeFromFloat(): void
     {
-        $number = new Number(200.25);
+        $number = Number::create(200.25);
 
         $this->assertEquals('200.2500', $number->toString());
         $this->assertEquals('200.25', $number->toString(2));
         $this->assertEquals('200', $number->toString(0));
 
-        $number = new Number(-200.25);
+        $number = Number::create(-200.25);
 
         $this->assertEquals('-200.2500', $number->toString());
         $this->assertEquals('-200.25', $number->toString(2));
         $this->assertEquals('-200', $number->toString(0));
     }
 
-    public function testCannotInitializeFromNull(): void
+    public function testCanInitializeFromNull(): void
     {
-        $this->expectException(InvalidNumberInputTypeException::class);
-        new Number(null);
+        $number = Number::create(null);
+        
+        $this->assertEquals('0.0000', $number->toString());
     }
 
     public function testCannotInitializeFromObject(): void

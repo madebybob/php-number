@@ -9,10 +9,14 @@ use MadeByBob\Number\Formatter\Formatter;
 class Number extends AbstractNumber
 {
     /**
-     * @param string|float|int $value
+     * @param string|float|int|null $value
      */
     public static function create($value): self
     {
+        if (is_null($value)) {
+            $value = '0.0000';
+        }
+
         return new static($value);
     }
 
