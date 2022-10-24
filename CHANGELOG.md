@@ -2,6 +2,18 @@
 
 All notable changes to `php-number` will be documented in this file
 
+## 2.2.1 - 2022-10-24
+
+### What's Changed
+
+- Add jsonSerialize by @melvin-drost in https://github.com/madebybob/php-number/pull/16
+
+### New Contributors
+
+- @melvin-drost made their first contribution in https://github.com/madebybob/php-number/pull/16
+
+**Full Changelog**: https://github.com/madebybob/php-number/compare/2.2.0...2.2.1
+
 ## 2.2.0 - 2022-10-22
 
 ### What's Changed
