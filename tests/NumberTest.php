@@ -489,6 +489,34 @@ class NumberTest extends TestCase
         $this->assertEquals('-0.3000', Number::create('0.3000')->opposite()->toString());
     }
 
+    public function testMin()
+    {
+        $number = new Number('200');
+
+        $this->assertEquals('200.000', $number->min('200'));
+        $this->assertEquals('200.000', $number->min('150'));
+        $this->assertEquals('250.000', $number->min('250'));
+    }
+
+    public function testMax()
+    {
+        $number = new Number('200');
+
+        $this->assertEquals('200.000', $number->max('200'));
+        $this->assertEquals('150.000', $number->max('150'));
+        $this->assertEquals('200.000', $number->max('250'));
+    }
+
+    public function testClamp()
+    {
+        $number = new Number('200');
+
+        $this->assertEquals('200.000', $number->clamp('100', '200'));
+        $this->assertEquals('200.000', $number->clamp('100', '300'));
+        $this->assertEquals('100.000', $number->clamp('50', '100'));
+        $this->assertEquals('250.000', $number->clamp('250', '300'));
+    }
+
     public function testIsPositive(): void
     {
         $this->assertTrue((new Number('200'))->isPositive());
@@ -521,9 +549,22 @@ class NumberTest extends TestCase
         $this->assertFalse((new Number('0.000000085'))->isZero());
     }
 
+    public function testIsEqual(): void
+    {
+        $five = new Number(5);
+
+        $this->assertTrue($five->isEqual('5'));
+        $this->assertTrue($five->isEqual('5.0000'));
+
+        $this->assertFalse($five->isEqual('-5'));
+        $this->assertFalse($five->isEqual('4.9999'));
+        $this->assertFalse($five->isEqual('5.0001'));
+    }
+
     public function testIsGreaterThan(): void
     {
         $five = new Number(5);
+
         $this->assertTrue($five->isGreaterThan('3'));
         $this->assertFalse($five->isGreaterThan('7'));
 
@@ -532,9 +573,24 @@ class NumberTest extends TestCase
         $this->assertFalse($five->isGreaterThan('5.0001'));
     }
 
+    public function testIsGreaterThanOrEqual(): void
+    {
+        $five = new Number(5);
+
+        $this->assertTrue($five->isGreaterThanOrEqual('5'));
+
+        $this->assertTrue($five->isGreaterThanOrEqual('3'));
+        $this->assertFalse($five->isGreaterThanOrEqual('7'));
+
+        $this->assertTrue($five->isGreaterThanOrEqual('-500'));
+        $this->assertTrue($five->isGreaterThanOrEqual('4.9999'));
+        $this->assertFalse($five->isGreaterThanOrEqual('5.0001'));
+    }
+
     public function testIsLessThan(): void
     {
         $five = new Number(5);
+
         $this->assertFalse($five->isLessThan('3'));
         $this->assertTrue($five->isLessThan('7'));
 
@@ -543,15 +599,18 @@ class NumberTest extends TestCase
         $this->assertTrue($five->isLessThan('5.0001'));
     }
 
-    public function testIsEqual(): void
+    public function testIsLessThanOrEqual(): void
     {
         $five = new Number(5);
-        $this->assertTrue($five->isEqual('5'));
-        $this->assertTrue($five->isEqual('5.0000'));
 
-        $this->assertFalse($five->isEqual('-5'));
-        $this->assertFalse($five->isEqual('4.9999'));
-        $this->assertFalse($five->isEqual('5.0001'));
+        $this->assertTrue($five->isLessThanOrEqual('5'));
+
+        $this->assertFalse($five->isLessThanOrEqual('3'));
+        $this->assertTrue($five->isLessThanOrEqual('7'));
+
+        $this->assertFalse($five->isLessThanOrEqual('-500'));
+        $this->assertFalse($five->isLessThanOrEqual('4.9999'));
+        $this->assertTrue($five->isLessThanOrEqual('5.0001'));
     }
 
     public function testRound(): void
@@ -640,5 +699,14 @@ class NumberTest extends TestCase
 
         $number = new Number('5943.000000');
         $this->assertEquals('5.943', $number->format(0, 0));
+    }
+
+    public function testCanJsonSerialize(): void
+    {
+        $number = new Number('9342.1557');
+        $array = ['number' => $number];
+
+        $this->assertEquals('{"number":"9342.1557"}', json_encode($array));
+        $this->assertEquals('"9342.1557"', json_encode($number));
     }
 }

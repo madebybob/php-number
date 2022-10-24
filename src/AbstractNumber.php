@@ -9,7 +9,7 @@ use MadeByBob\Number\Exception\DivisionByZeroError;
 use MadeByBob\Number\Exception\InvalidNumberInputTypeException;
 use MadeByBob\Number\Exception\InvalidRoundingModeException;
 
-abstract class AbstractNumber
+abstract class AbstractNumber implements \JsonSerializable
 {
     protected const INTERNAL_SCALE = 12;
     protected const DEFAULT_SCALE = 4;
@@ -299,6 +299,54 @@ abstract class AbstractNumber
     }
 
     /**
+     * Prevent the current value to be less than the given value.
+     *
+     * @param AbstractNumber|string|float|int $value
+     */
+    public function min($value = null): self
+    {
+        $value = $this->getNumberFromInput($value);
+
+        if ($this->isLessThan($value)) {
+            return $this->init((string) $value);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Prevent the current value to be more than the given value.
+     *
+     * @param AbstractNumber|string|float|int $value
+     */
+    public function max($value = null): self
+    {
+        $value = $this->getNumberFromInput($value);
+
+        if ($this->isGreaterThan($value)) {
+            return $this->init((string) $value);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Put a clamp on the current value.
+     *
+     * @param AbstractNumber|string|float|int $min
+     * @param AbstractNumber|string|float|int $max
+     */
+    public function clamp($min, $max): self
+    {
+        $result = $this;
+
+        $result = $result->min($min);
+        $result = $result->max($max);
+
+        return $this->init((string) $result);
+    }
+
+    /**
      * Return boolean if the current value is a positive number.
      */
     public function isPositive(): bool
@@ -331,6 +379,29 @@ abstract class AbstractNumber
     }
 
     /**
+     * Returns boolean if the current value is equal to the given value.
+     *
+     * @param AbstractNumber|string|float|int $value
+     */
+    public function isEqual($value, int $scale = null): bool
+    {
+        $number = $this->getNumberFromInput($value);
+        $scale = $scale ?? self::INTERNAL_SCALE;
+
+        return bccomp($this->value, $number->get(), $scale) === 0;
+    }
+
+    /**
+     * Alias for isEqual method.
+     *
+     * @param AbstractNumber|string|float|int $value
+     */
+    public function eq($value, int $scale = null): bool
+    {
+        return $this->isEqual($value, $scale);
+    }
+
+    /**
      * Returns boolean if the current value is greater than the given value.
      *
      * @param AbstractNumber|string|float|int $value
@@ -341,6 +412,36 @@ abstract class AbstractNumber
         $scale = $scale ?? self::INTERNAL_SCALE;
 
         return bccomp($this->value, $number->get(), $scale) === 1;
+    }
+
+    /**
+     * Alias for isGreaterThan method.
+     *
+     * @param AbstractNumber|string|float|int $value
+     */
+    public function gt($value, int $scale = null): bool
+    {
+        return $this->isGreaterThan($value, $scale);
+    }
+
+    /**
+     * Returns boolean if the current value is greater than or equal to the given value.
+     *
+     * @param AbstractNumber|string|float|int $value
+     */
+    public function isGreaterThanOrEqual($value, int $scale = null): bool
+    {
+        return $this->isGreaterThan($value, $scale) || $this->isEqual($value, $scale);
+    }
+
+    /**
+     * Alias for isGreaterThanOrEqual method.
+     *
+     * @param AbstractNumber|string|float|int $value
+     */
+    public function gte($value, int $scale = null): bool
+    {
+        return $this->isGreaterThanOrEqual($value, $scale);
     }
 
     /**
@@ -357,16 +458,33 @@ abstract class AbstractNumber
     }
 
     /**
-     * Returns boolean if the current value is equal to the given value.
+     * Alias for isLessThan method.
      *
      * @param AbstractNumber|string|float|int $value
      */
-    public function isEqual($value, int $scale = null): bool
+    public function lt($value, int $scale = null): bool
     {
-        $number = $this->getNumberFromInput($value);
-        $scale = $scale ?? self::INTERNAL_SCALE;
+        return $this->isLessThan($value, $scale);
+    }
 
-        return bccomp($this->value, $number->get(), $scale) === 0;
+    /**
+     * Returns boolean if the current value is less than or equal to the given value.
+     *
+     * @param AbstractNumber|string|float|int $value
+     */
+    public function isLessThanOrEqual($value, int $scale = null): bool
+    {
+        return $this->isLessThan($value, $scale) || $this->isEqual($value, $scale);
+    }
+
+    /**
+     * Alias for isGreaterThanOrEqual method.
+     *
+     * @param AbstractNumber|string|float|int $value
+     */
+    public function lte($value, int $scale = null): bool
+    {
+        return $this->isLessThanOrEqual($value, $scale);
     }
 
     /**
@@ -419,6 +537,14 @@ abstract class AbstractNumber
      * Converts the current MadeByBob\Number instance into a string.
      */
     public function __toString(): string
+    {
+        return $this->toString();
+    }
+
+    /**
+     * Converts the current MadeByBob\Number instance into a string.
+     */
+    public function jsonSerialize()
     {
         return $this->toString();
     }

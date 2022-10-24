@@ -40,6 +40,7 @@ to the desired needs of your business.
     - [Modulus](#modulus)
     - [State & Comparison](#state--comparison)
     - [Absolute & opposite values](#absolute--opposite-values)
+    - [Limiting values](#limiting-values)
     - [Rounding](#rounding)
     - [Immutable & Chaining](#immutable--chaining)
     - [Extensibility](#extensibility)
@@ -147,6 +148,10 @@ To compare two numbers with each other, these helpers are available, which will 
 ``` php
 $number = new Number('200');
 
+// check if the number is equal to x
+$number->isEqual('200');
+$number->eq('200');
+
 // check if the number is positive
 $number->isPositive();
 
@@ -155,12 +160,19 @@ $number->isNegative();
 
 // check if the number is greater than x
 $number->isGreaterThan('100');
+$number->gt('100');
+
+// check if the number is greater than or equal to x
+$number->isGreaterThanOrEqual('100');
+$number->gte('100');
 
 // check if the number is less than x
 $number->isLessThan('300');
+$number->lt('300');
 
-// check if the number is equal to x
-$number->isEqual('200');
+// check if the number is less than or equal to x
+$number->isLessThanOrEqual('300');
+$number->lte('300');
 
 // check if the number is zero ("0")
 $number->isZero();
@@ -189,6 +201,28 @@ $absolute = $number->opposite();
 
 // opp is an alias for absolute
 $abs = $number->opp();
+```
+
+### Limiting values
+To make sure the current number is not higher or lower than expected:
+
+```php
+$number = new Number('200');
+
+// $result will be 250
+$result = $number->min('250');
+
+// $result will be 100
+$result = $number->max('100');
+```
+
+To use a min and max 'clamp' at the same time:
+
+```php
+$number = new Number('200');
+
+// $result will be 150
+$result = $number->clamp('100', '150');
 ```
 
 ### Rounding
