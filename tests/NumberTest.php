@@ -699,4 +699,13 @@ class NumberTest extends TestCase
         $number = new Number('5943.000000');
         $this->assertEquals('5.943', $number->format(0, 0));
     }
+
+    public function testCanJsonSerialize(): void
+    {
+        $number = new Number('9342.1557');
+        $array = ['number' => $number];
+
+        $this->assertEquals('{"number":"9342.1557"}', json_encode($array));
+        $this->assertEquals('"9342.1557"', json_encode($number));
+    }
 }

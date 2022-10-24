@@ -9,7 +9,7 @@ use MadeByBob\Number\Exception\DivisionByZeroError;
 use MadeByBob\Number\Exception\InvalidNumberInputTypeException;
 use MadeByBob\Number\Exception\InvalidRoundingModeException;
 
-abstract class AbstractNumber
+abstract class AbstractNumber implements \JsonSerializable
 {
     protected const INTERNAL_SCALE = 12;
     protected const DEFAULT_SCALE = 4;
@@ -537,6 +537,14 @@ abstract class AbstractNumber
      * Converts the current MadeByBob\Number instance into a string.
      */
     public function __toString(): string
+    {
+        return $this->toString();
+    }
+
+    /**
+     * Converts the current MadeByBob\Number instance into a string.
+     */
+    public function jsonSerialize()
     {
         return $this->toString();
     }
