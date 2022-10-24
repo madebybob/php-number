@@ -2,6 +2,14 @@
 
 All notable changes to `php-number` will be documented in this file
 
+## 2.2.3 - 2022-10-24
+
+### What's Changed
+
+- Make `Number::create` accept null values by @bobmulder in https://github.com/madebybob/php-number/pull/13
+
+**Full Changelog**: https://github.com/madebybob/php-number/compare/2.2.2...2.2.3
+
 ## 2.2.2 - 2022-10-24
 
 ### What's Changed
