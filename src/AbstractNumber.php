@@ -544,7 +544,7 @@ abstract class AbstractNumber implements \JsonSerializable
     /**
      * Converts the current MadeByBob\Number instance into a string.
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return $this->toString();
     }
