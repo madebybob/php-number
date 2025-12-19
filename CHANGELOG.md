@@ -2,6 +2,18 @@
 
 All notable changes to `php-number` will be documented in this file
 
+## 2.2.5 - 2025-12-19
+
+### What's Changed
+
+* Add return type to jsonSerialize method by @HankChenCH in https://github.com/madebybob/php-number/pull/17
+
+### New Contributors
+
+* @HankChenCH made their first contribution in https://github.com/madebybob/php-number/pull/17
+
+**Full Changelog**: https://github.com/madebybob/php-number/compare/2.2.4...2.2.5
+
 ## 2.2.4 - 2025-12-18
 
 ### What's Changed
