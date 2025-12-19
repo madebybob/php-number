@@ -2,6 +2,14 @@
 
 All notable changes to `php-number` will be documented in this file
 
+## 2.2.4 - 2025-12-18
+
+### What's Changed
+
+* Update GitHub workflows by @bobmulder in https://github.com/madebybob/php-number/pull/18
+
+**Full Changelog**: https://github.com/madebybob/php-number/compare/2.2.3...2.2.4
+
 ## 2.2.3 - 2022-10-24
 
 ### What's Changed
