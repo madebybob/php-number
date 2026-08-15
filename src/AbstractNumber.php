@@ -8,6 +8,7 @@ use MadeByBob\Number\Exception\DecimalExponentError;
 use MadeByBob\Number\Exception\DivisionByZeroError;
 use MadeByBob\Number\Exception\InvalidNumberInputTypeException;
 use MadeByBob\Number\Exception\InvalidRoundingModeException;
+use WeakReference;
 
 abstract class AbstractNumber implements \JsonSerializable
 {
@@ -26,19 +27,42 @@ abstract class AbstractNumber implements \JsonSerializable
     ];
 
     protected string $value;
-    protected ?self $parent;
+
+    /**
+     * Weak reference to the instance this instance was derived from.
+     *
+     * The reference is weak on purpose: a strong reference would keep every
+     * intermediate result of a calculation alive for as long as its last
+     * descendant lives, which makes accumulating loops grow without bound.
+     *
+     * @var WeakReference<AbstractNumber>|null
+     */
+    protected ?WeakReference $parent;
+
+    /**
+     * Cached weak reference to $this, shared with every derived instance.
+     *
+     * @var WeakReference<AbstractNumber>|null
+     */
+    private ?WeakReference $reference = null;
+
+    /**
+     * Lazily calculated value, truncated to the internal scale.
+     */
+    private ?string $internal = null;
 
     /**
      * @param string|float|int $value
      */
     public function __construct($value, ?self $parent = null)
     {
-        if (! is_string($value) && ! is_float($value) && ! is_int($value)) {
+        if (is_string($value) || is_int($value) || is_float($value)) {
+            $this->value = self::normalize((string) $value);
+        } else {
             throw new InvalidNumberInputTypeException($value);
         }
 
-        $this->value = (string) $value;
-        $this->parent = $parent;
+        $this->parent = $parent === null ? null : $parent->reference();
     }
 
     public function init(string $value): self
@@ -53,10 +77,7 @@ abstract class AbstractNumber implements \JsonSerializable
      */
     public function add($value, int $scale = null): self
     {
-        $number = $this->getNumberFromInput($value);
-        $scale = $scale ?? self::INTERNAL_SCALE;
-
-        $sum = bcadd($this->value, $number->get(), $scale);
+        $sum = bcadd($this->value, $this->getValueFromInput($value), $scale ?? self::INTERNAL_SCALE);
 
         return $this->init($sum);
     }
@@ -78,10 +99,7 @@ abstract class AbstractNumber implements \JsonSerializable
      */
     public function subtract($value, int $scale = null): self
     {
-        $number = $this->getNumberFromInput($value);
-        $scale = $scale ?? self::INTERNAL_SCALE;
-
-        $sum = bcsub($this->value, $number->get(), $scale);
+        $sum = bcsub($this->value, $this->getValueFromInput($value), $scale ?? self::INTERNAL_SCALE);
 
         return $this->init($sum);
     }
@@ -120,18 +138,17 @@ abstract class AbstractNumber implements \JsonSerializable
      */
     public function divide($value, int $scale = null, $fallback = null): self
     {
-        $number = $this->getNumberFromInput($value);
-        $scale = $scale ?? self::INTERNAL_SCALE;
+        $divisor = $this->getValueFromInput($value);
 
-        if ($number->isZero()) {
+        if (bccomp($divisor, '0', self::INTERNAL_SCALE) === 0) {
             if ($fallback === null) {
                 throw new DivisionByZeroError();
             }
 
-            return $this->init((string) $fallback);
+            return $this->init($this->getValueFromInput($fallback));
         }
 
-        $div = bcdiv($this->value, $number->get(), $scale);
+        $div = bcdiv($this->value, $divisor, $scale ?? self::INTERNAL_SCALE);
 
         return $this->init($div);
     }
@@ -154,10 +171,7 @@ abstract class AbstractNumber implements \JsonSerializable
      */
     public function multiply($value, int $scale = null): self
     {
-        $number = $this->getNumberFromInput($value);
-        $scale = $scale ?? self::INTERNAL_SCALE;
-
-        $mul = bcmul($this->value, $number->get(), $scale);
+        $mul = bcmul($this->value, $this->getValueFromInput($value), $scale ?? self::INTERNAL_SCALE);
 
         return $this->init($mul);
     }
@@ -179,10 +193,7 @@ abstract class AbstractNumber implements \JsonSerializable
      */
     public function modulus($value, int $scale = null): self
     {
-        $number = $this->getNumberFromInput($value);
-        $scale = $scale ?? self::INTERNAL_SCALE;
-
-        $mod = bcmod($this->value, $number->get(), $scale);
+        $mod = bcmod($this->value, $this->getValueFromInput($value), $scale ?? self::INTERNAL_SCALE);
 
         return $this->init($mod);
     }
@@ -204,58 +215,41 @@ abstract class AbstractNumber implements \JsonSerializable
      */
     public function pow($value, int $scale = null): self
     {
-        $exponent = $this->getNumberFromInput($value);
-        $scale = $scale ?? self::INTERNAL_SCALE;
+        $exponent = $this->toInteger($this->getValueFromInput($value));
 
-        $exponentWithZeroScale = $exponent->toString(0);
-        if ($exponent->isEqual($exponentWithZeroScale) === false) {
-            throw new DecimalExponentError();
-        }
+        $pow = bcpow($this->value, $exponent, $scale ?? self::INTERNAL_SCALE);
 
-        $mod = bcpow($this->value, $exponentWithZeroScale, $scale);
-
-        return $this->init($mod);
+        return $this->init($pow);
     }
 
     /**
      * Raise an arbitrary precision number to another, reduced by a specified modulus.
      *
      * @param AbstractNumber|string|float|int $value
+     * @param AbstractNumber|string|float|int $modulus
      */
     public function powmod($value, $modulus, int $scale = null): self
     {
-        $exponent = $this->getNumberFromInput($value);
-        $modulus = $this->getNumberFromInput($modulus);
-        $scale = $scale ?? self::INTERNAL_SCALE;
+        $exponent = $this->toInteger($this->getValueFromInput($value));
+        $modulus = bcadd($this->getValueFromInput($modulus), '0', 0);
 
-        $exponentWithZeroScale = $exponent->toString(0);
-        if ($exponent->isEqual($exponentWithZeroScale) === false) {
-            throw new DecimalExponentError();
-        }
-
-        $powmod = bcpowmod($this->value, $exponentWithZeroScale, $modulus->toString(0), $scale);
+        $powmod = bcpowmod($this->value, $exponent, $modulus, $scale ?? self::INTERNAL_SCALE);
 
         return $this->init($powmod);
     }
 
     /**
      * Get the square root of an arbitrary precision number.
-     *
-     * @param AbstractNumber|string|float|int $value
      */
     public function sqrt(int $scale = null): self
     {
-        $scale = $scale ?? self::INTERNAL_SCALE;
+        $sqrt = bcsqrt($this->value, $scale ?? self::INTERNAL_SCALE);
 
-        $mod = bcsqrt($this->value, $scale);
-
-        return $this->init($mod);
+        return $this->init($sqrt);
     }
 
     /**
      * Alias for sqrt method.
-     *
-     * @param AbstractNumber|string|float|int $value
      */
     public function squareRoot(int $scale = null): self
     {
@@ -267,11 +261,11 @@ abstract class AbstractNumber implements \JsonSerializable
      */
     public function absolute(): self
     {
-        if ($this->isPositive()) {
+        if (strncmp($this->value, '-', 1) !== 0) {
             return $this;
         }
 
-        return $this->multiply(-1);
+        return $this->init(substr($this->value, 1));
     }
 
     /**
@@ -287,7 +281,11 @@ abstract class AbstractNumber implements \JsonSerializable
      */
     public function opposite(): self
     {
-        return $this->multiply(-1);
+        if (strncmp($this->value, '-', 1) === 0) {
+            return $this->init(substr($this->value, 1));
+        }
+
+        return $this->init(self::sign(true, $this->value));
     }
 
     /**
@@ -305,10 +303,10 @@ abstract class AbstractNumber implements \JsonSerializable
      */
     public function min($value = null): self
     {
-        $value = $this->getNumberFromInput($value);
+        $minimum = $this->getValueFromInput($value);
 
-        if ($this->isLessThan($value)) {
-            return $this->init((string) $value);
+        if (bccomp($this->value, $minimum, self::INTERNAL_SCALE) === -1) {
+            return $this->init($minimum);
         }
 
         return $this;
@@ -321,10 +319,10 @@ abstract class AbstractNumber implements \JsonSerializable
      */
     public function max($value = null): self
     {
-        $value = $this->getNumberFromInput($value);
+        $maximum = $this->getValueFromInput($value);
 
-        if ($this->isGreaterThan($value)) {
-            return $this->init((string) $value);
+        if (bccomp($this->value, $maximum, self::INTERNAL_SCALE) === 1) {
+            return $this->init($maximum);
         }
 
         return $this;
@@ -338,12 +336,7 @@ abstract class AbstractNumber implements \JsonSerializable
      */
     public function clamp($min, $max): self
     {
-        $result = $this;
-
-        $result = $result->min($min);
-        $result = $result->max($max);
-
-        return $this->init((string) $result);
+        return $this->min($min)->max($max);
     }
 
     /**
@@ -367,7 +360,7 @@ abstract class AbstractNumber implements \JsonSerializable
      */
     public function isZero(): bool
     {
-        return $this->isEqual('0');
+        return bccomp($this->value, '0', self::INTERNAL_SCALE) === 0;
     }
 
     /**
@@ -375,7 +368,7 @@ abstract class AbstractNumber implements \JsonSerializable
      */
     public function isThirteen(): bool
     {
-        return $this->isEqual('13');
+        return bccomp($this->value, '13', self::INTERNAL_SCALE) === 0;
     }
 
     /**
@@ -385,10 +378,7 @@ abstract class AbstractNumber implements \JsonSerializable
      */
     public function isEqual($value, int $scale = null): bool
     {
-        $number = $this->getNumberFromInput($value);
-        $scale = $scale ?? self::INTERNAL_SCALE;
-
-        return bccomp($this->value, $number->get(), $scale) === 0;
+        return $this->compare($value, $scale) === 0;
     }
 
     /**
@@ -408,10 +398,7 @@ abstract class AbstractNumber implements \JsonSerializable
      */
     public function isGreaterThan($value, int $scale = null): bool
     {
-        $number = $this->getNumberFromInput($value);
-        $scale = $scale ?? self::INTERNAL_SCALE;
-
-        return bccomp($this->value, $number->get(), $scale) === 1;
+        return $this->compare($value, $scale) === 1;
     }
 
     /**
@@ -431,7 +418,7 @@ abstract class AbstractNumber implements \JsonSerializable
      */
     public function isGreaterThanOrEqual($value, int $scale = null): bool
     {
-        return $this->isGreaterThan($value, $scale) || $this->isEqual($value, $scale);
+        return $this->compare($value, $scale) >= 0;
     }
 
     /**
@@ -451,10 +438,7 @@ abstract class AbstractNumber implements \JsonSerializable
      */
     public function isLessThan($value, int $scale = null): bool
     {
-        $number = $this->getNumberFromInput($value);
-        $scale = $scale ?? self::INTERNAL_SCALE;
-
-        return bccomp($this->value, $number->get(), $scale) === -1;
+        return $this->compare($value, $scale) === -1;
     }
 
     /**
@@ -474,7 +458,7 @@ abstract class AbstractNumber implements \JsonSerializable
      */
     public function isLessThanOrEqual($value, int $scale = null): bool
     {
-        return $this->isLessThan($value, $scale) || $this->isEqual($value, $scale);
+        return $this->compare($value, $scale) <= 0;
     }
 
     /**
@@ -492,11 +476,11 @@ abstract class AbstractNumber implements \JsonSerializable
      */
     public function round(int $precision = 0, int $mode = self::ROUND_HALF_UP): self
     {
-        if (in_array($mode, self::ROUNDING_MODES) === false) {
+        if (isset(self::ROUNDING_MODES[$mode]) === false) {
             throw new InvalidRoundingModeException();
         }
 
-        return $this->init((string) round((float) $this->value, $precision, $mode));
+        return $this->init(self::roundValue($this->value, $precision, $mode));
     }
 
     /**
@@ -504,7 +488,13 @@ abstract class AbstractNumber implements \JsonSerializable
      */
     public function ceil(): self
     {
-        return $this->init((string) ceil((float) $this->value));
+        [$negative, $integer, $fraction] = self::split($this->value);
+
+        if ($negative === false && $fraction !== '') {
+            return $this->init(bcadd($integer, '1', 0));
+        }
+
+        return $this->init(self::sign($negative, $integer));
     }
 
     /**
@@ -512,15 +502,31 @@ abstract class AbstractNumber implements \JsonSerializable
      */
     public function floor(): self
     {
-        return $this->init((string) floor((float) $this->value));
+        [$negative, $integer, $fraction] = self::split($this->value);
+
+        if ($negative && $fraction !== '') {
+            return $this->init(bcsub(self::sign(true, $integer), '1', 0));
+        }
+
+        return $this->init(self::sign($negative, $integer));
     }
 
     /**
      * Returns it's parent by which this instance was initialized.
+     *
+     * Note that the parent is referenced weakly, so `null` is returned as soon
+     * as the parent has been garbage collected. Keep a reference to the numbers
+     * you want to trace back to.
      */
     public function parent(): ?self
     {
-        return $this->parent;
+        if ($this->parent === null) {
+            return null;
+        }
+
+        $parent = $this->parent->get();
+
+        return $parent instanceof self ? $parent : null;
     }
 
     /**
@@ -528,9 +534,7 @@ abstract class AbstractNumber implements \JsonSerializable
      */
     public function toString(int $scale = null): string
     {
-        $scale = $scale ?? self::DEFAULT_SCALE;
-
-        return bcadd('0.0000', $this->value, $scale);
+        return bcadd($this->value, '0', $scale ?? self::DEFAULT_SCALE);
     }
 
     /**
@@ -569,9 +573,238 @@ abstract class AbstractNumber implements \JsonSerializable
         }
 
         if (is_string($value) || is_float($value) || is_int($value)) {
-            return $this->init((string) $value);
+            return $this->init(self::normalize((string) $value));
         }
 
         throw new InvalidNumberInputTypeException($value);
+    }
+
+    /**
+     * @internal Provides the raw value of the given input, truncated to the internal scale.
+     *
+     * Unlike getNumberFromInput() this does not allocate an instance for scalar
+     * input, which keeps the arithmetic and comparison methods allocation free.
+     *
+     * @param AbstractNumber|string|float|int $value
+     */
+    protected function getValueFromInput($value): string
+    {
+        if ($value instanceof self) {
+            return $value->internalValue();
+        }
+
+        if (is_string($value) || is_int($value) || is_float($value)) {
+            return self::truncate(self::normalize((string) $value));
+        }
+
+        throw new InvalidNumberInputTypeException($value);
+    }
+
+    /**
+     * @internal Provides the (cached) value of this instance, truncated to the internal scale.
+     */
+    protected function internalValue(): string
+    {
+        return $this->internal ??= self::truncate($this->value);
+    }
+
+    /**
+     * Compares the current value with the given value.
+     *
+     * @param AbstractNumber|string|float|int $value
+     */
+    private function compare($value, int $scale = null): int
+    {
+        return bccomp($this->value, $this->getValueFromInput($value), $scale ?? self::INTERNAL_SCALE);
+    }
+
+    /**
+     * Provides the (cached) weak reference to this instance.
+     *
+     * @return WeakReference<AbstractNumber>
+     */
+    private function reference(): WeakReference
+    {
+        return $this->reference ??= WeakReference::create($this);
+    }
+
+    /**
+     * Provides the integer representation of the given value, or throws when the value has decimals.
+     */
+    private function toInteger(string $value): string
+    {
+        $integer = bcadd($value, '0', 0);
+
+        if (bccomp($value, $integer, self::INTERNAL_SCALE) !== 0) {
+            throw new DecimalExponentError();
+        }
+
+        return $integer;
+    }
+
+    /**
+     * Truncates the given value to the internal scale.
+     *
+     * Values that already fit the internal scale are returned as-is; padding
+     * them with zeroes does not change their value, so the bcmath call is only
+     * needed to cut off surplus decimals.
+     */
+    private static function truncate(string $value): string
+    {
+        $position = strpos($value, '.');
+
+        if ($position === false || strlen($value) - $position - 1 <= self::INTERNAL_SCALE) {
+            return $value;
+        }
+
+        return bcadd($value, '0', self::INTERNAL_SCALE);
+    }
+
+    /**
+     * Converts exponential notation into a string bcmath can work with.
+     *
+     * Casting a float to string results in an exponential notation like
+     * "1.0E-5" as soon as the value is small or large enough, which every
+     * bcmath function rejects. Expanding the notation is lossless.
+     */
+    private static function normalize(string $value): string
+    {
+        $exponent = strpbrk($value, 'eE');
+        if ($exponent === false || is_numeric($value) === false) {
+            return $value;
+        }
+
+        $mantissa = substr($value, 0, -strlen($exponent));
+        $negative = strncmp($mantissa, '-', 1) === 0;
+
+        $result = self::shift($negative ? substr($mantissa, 1) : $mantissa, (int) substr($exponent, 1));
+
+        return self::sign($negative, $result);
+    }
+
+    /**
+     * Rounds the given value with the given precision and rounding mode.
+     */
+    private static function roundValue(string $value, int $precision, int $mode): string
+    {
+        [$negative, $integer, $fraction] = self::split($value);
+
+        if ($precision >= 0 && strlen($fraction) <= $precision) {
+            return $value;
+        }
+
+        // Move the digits that have to survive the rounding in front of the decimal point.
+        $digits = $integer . $fraction;
+        $position = strlen($integer) + $precision;
+
+        if ($position < 1) {
+            $digits = str_repeat('0', 1 - $position) . $digits;
+            $position = 1;
+        } elseif ($position > strlen($digits)) {
+            $digits .= str_repeat('0', $position - strlen($digits));
+        }
+
+        $kept = substr($digits, 0, $position);
+
+        if (self::roundsUp(substr($digits, $position), $kept, $mode)) {
+            $kept = bcadd($kept, '1', 0);
+        }
+
+        return self::sign($negative, self::shift($kept, -$precision));
+    }
+
+    /**
+     * Determines whether the truncated part has to be rounded up.
+     */
+    private static function roundsUp(string $fraction, string $integer, int $mode): bool
+    {
+        if ($fraction === '') {
+            return false;
+        }
+
+        $comparison = strcmp(substr($fraction, 0, 1), '5');
+
+        if ($comparison !== 0) {
+            return $comparison > 0;
+        }
+
+        // Exactly one half only when nothing but zeroes follow the leading five.
+        if (ltrim(substr($fraction, 1), '0') !== '') {
+            return true;
+        }
+
+        $odd = ((int) substr($integer, -1)) % 2 === 1;
+
+        switch ($mode) {
+            case self::ROUND_HALF_DOWN:
+                return false;
+            case self::ROUND_HALF_EVEN:
+                return $odd;
+            case self::ROUND_HALF_ODD:
+                return $odd === false;
+            default:
+                return true;
+        }
+    }
+
+    /**
+     * Splits the given value into its sign, integer part and fraction.
+     *
+     * @return array{0: bool, 1: string, 2: string}
+     */
+    private static function split(string $value): array
+    {
+        $negative = strncmp($value, '-', 1) === 0;
+        if ($negative || strncmp($value, '+', 1) === 0) {
+            $value = substr($value, 1);
+        }
+
+        $position = strpos($value, '.');
+        if ($position === false) {
+            return [$negative, $value === '' ? '0' : $value, ''];
+        }
+
+        $integer = substr($value, 0, $position);
+        $fraction = rtrim(substr($value, $position + 1), '0');
+
+        return [$negative, $integer === '' ? '0' : $integer, $fraction];
+    }
+
+    /**
+     * Moves the decimal point of the given positive value to the right.
+     */
+    private static function shift(string $value, int $positions): string
+    {
+        [, $integer, $fraction] = self::split($value);
+
+        if ($positions === 0) {
+            return $fraction === '' ? $integer : $integer . '.' . $fraction;
+        }
+
+        $digits = $integer . $fraction;
+        $point = strlen($integer) + $positions;
+
+        if ($point < 1) {
+            $digits = str_repeat('0', 1 - $point) . $digits;
+            $point = 1;
+        } elseif ($point > strlen($digits)) {
+            $digits .= str_repeat('0', $point - strlen($digits));
+        }
+
+        $fraction = rtrim(substr($digits, $point), '0');
+
+        return $fraction === '' ? substr($digits, 0, $point) : substr($digits, 0, $point) . '.' . $fraction;
+    }
+
+    /**
+     * Prefixes the given value with a minus sign, unless the value is zero.
+     */
+    private static function sign(bool $negative, string $value): string
+    {
+        if ($negative === false || ltrim($value, '0.') === '') {
+            return $value;
+        }
+
+        return '-' . $value;
     }
 }

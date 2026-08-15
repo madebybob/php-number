@@ -241,6 +241,31 @@ $number->ceil();
 $number->floor();
 ```
 
+Rounding is done with BC Math, so numbers that do not fit a float are rounded exactly as well:
+
+``` php
+$number = new Number('123456789012345678901234567890.55');
+
+// '123456789012345678901234567890.6'
+$number->round(1)->toString(1);
+```
+
+A precision and one of four rounding modes can be given. Halves are rounded away from zero by default:
+
+``` php
+// '5.0000', halves are rounded away from zero
+Number::create('4.5')->round(0, Number::ROUND_HALF_UP);
+
+// '4.0000', halves are rounded towards zero
+Number::create('4.5')->round(0, Number::ROUND_HALF_DOWN);
+
+// '4.0000', halves are rounded to the nearest even number
+Number::create('4.5')->round(0, Number::ROUND_HALF_EVEN);
+
+// '5.0000', halves are rounded to the nearest odd number
+Number::create('4.5')->round(0, Number::ROUND_HALF_ODD);
+```
+
 ### Immutable & Chaining
 Since the `Number` class is immutable, most methods will return a new `Number` instance.
 
@@ -261,6 +286,26 @@ $result = $number
     ->subtract(109.5)
     ->mul($two)
     ->toString();
+```
+
+Every instance knows the instance it was derived from, which lets you trace a calculation back:
+
+``` php
+$five = new Number(5);
+$seven = $five->add(2);
+
+// '5.0000'
+$seven->parent()->toString();
+```
+
+The parent is referenced weakly, so intermediate results of a chain are not kept in memory. Whenever the parent
+has been garbage collected, `parent()` returns `null`. Keep a reference to the numbers you want to trace back to:
+
+``` php
+$result = (new Number(5))->add(2)->add(8);
+
+// null, the result of add(2) was not referenced by anything else
+$result->parent();
 ```
 
 ## Extensibility
