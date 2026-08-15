@@ -11,6 +11,18 @@ use RuntimeException;
 abstract class Formatter
 {
     /**
+     * Maximum amount of formatters kept in memory.
+     */
+    private const CACHE_SIZE = 32;
+
+    /**
+     * Formatters, keyed by type, locale and options.
+     *
+     * @var array<string, NumberFormatter>
+     */
+    private static array $formatters = [];
+
+    /**
      * Shorthand for formatting decimals.
      */
     public static function format(string $value, ?int $minFractionDigits = null, ?int $maxFractionDigits = null, ?string $locale = null): string
@@ -20,7 +32,7 @@ abstract class Formatter
             NumberFormatter::MAX_FRACTION_DIGITS => $maxFractionDigits,
         ];
 
-        return self::get(NumberFormatter::DECIMAL, $locale, $options)->format((float) $value);
+        return self::cached(NumberFormatter::DECIMAL, $locale, $options)->format((float) $value);
     }
 
     /**
@@ -28,7 +40,47 @@ abstract class Formatter
      */
     public static function formatMoney(string $value, string $isoCode, ?string $locale = null): string
     {
-        return self::get(NumberFormatter::CURRENCY, $locale)->formatCurrency((float) $value, $isoCode);
+        return self::cached(NumberFormatter::CURRENCY, $locale)->formatCurrency((float) $value, $isoCode);
+    }
+
+    /**
+     * Drops the formatters kept in memory.
+     */
+    public static function flush(): void
+    {
+        self::$formatters = [];
+    }
+
+    /**
+     * Provides a shared NumberFormatter instance for the given configuration.
+     *
+     * Constructing a NumberFormatter is roughly twenty times as expensive as
+     * formatting a value with it, so instances are reused. They are only handed
+     * out internally, which guarantees the attributes of a cached instance
+     * always match the key it is cached under.
+     *
+     * @param array<int, int|null> $options
+     */
+    private static function cached(int $type, ?string $locale = null, array $options = []): NumberFormatter
+    {
+        self::assertIntlIsLoaded();
+
+        $locale = $locale ?? Locale::getDefault();
+
+        $key = $type . '|' . $locale;
+        foreach ($options as $option => $setting) {
+            $key .= '|' . $option . ':' . ($setting ?? '');
+        }
+
+        if (isset(self::$formatters[$key])) {
+            return self::$formatters[$key];
+        }
+
+        if (count(self::$formatters) >= self::CACHE_SIZE) {
+            self::$formatters = [];
+        }
+
+        return self::$formatters[$key] = self::get($type, $locale, $options);
     }
 
     /**
@@ -36,9 +88,7 @@ abstract class Formatter
      */
     public static function get(int $type, ?string $locale = null, array $options = []): NumberFormatter
     {
-        if (extension_loaded('intl') === false) {
-            throw new RuntimeException('PHP\'s intl extension is required to use the Formatter');
-        }
+        self::assertIntlIsLoaded();
 
         if ($locale === null) {
             $locale = Locale::getDefault();
@@ -54,5 +104,12 @@ abstract class Formatter
         }
 
         return $formatter;
+    }
+
+    private static function assertIntlIsLoaded(): void
+    {
+        if (extension_loaded('intl') === false) {
+            throw new RuntimeException('PHP\'s intl extension is required to use the Formatter');
+        }
     }
 }

@@ -6,6 +6,7 @@ use Locale;
 use MadeByBob\Number\Exception\DecimalExponentError;
 use MadeByBob\Number\Exception\DivisionByZeroError;
 use MadeByBob\Number\Exception\InvalidNumberInputTypeException;
+use MadeByBob\Number\Exception\InvalidRoundingModeException;
 use MadeByBob\Number\Number;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -662,6 +663,79 @@ class NumberTest extends TestCase
 
         $this->assertEquals('-5.0000', Number::create('-4.9000')->floor()->toString());
         $this->assertEquals('-5.0000', Number::create('-4.1000')->floor()->toString());
+    }
+
+    public function testRoundingModes(): void
+    {
+        $this->assertEquals('4.0000', Number::create('4.5')->round(0, Number::ROUND_HALF_DOWN)->toString());
+        $this->assertEquals('5.0000', Number::create('4.5001')->round(0, Number::ROUND_HALF_DOWN)->toString());
+        $this->assertEquals('-4.0000', Number::create('-4.5')->round(0, Number::ROUND_HALF_DOWN)->toString());
+
+        $this->assertEquals('4.0000', Number::create('4.5')->round(0, Number::ROUND_HALF_EVEN)->toString());
+        $this->assertEquals('6.0000', Number::create('5.5')->round(0, Number::ROUND_HALF_EVEN)->toString());
+        $this->assertEquals('-6.0000', Number::create('-5.5')->round(0, Number::ROUND_HALF_EVEN)->toString());
+
+        $this->assertEquals('5.0000', Number::create('4.5')->round(0, Number::ROUND_HALF_ODD)->toString());
+        $this->assertEquals('5.0000', Number::create('5.5')->round(0, Number::ROUND_HALF_ODD)->toString());
+        $this->assertEquals('-5.0000', Number::create('-5.5')->round(0, Number::ROUND_HALF_ODD)->toString());
+    }
+
+    public function testCannotRoundWithUnknownMode(): void
+    {
+        $this->expectException(InvalidRoundingModeException::class);
+        Number::create('4.5')->round(0, 99);
+    }
+
+    public function testRoundingKeepsPrecisionBeyondFloats(): void
+    {
+        // A float cannot hold these values, let alone round them.
+        $number = Number::create('123456789012345678901234567890.55');
+
+        $this->assertEquals('123456789012345678901234567890.6', $number->round(1)->toString(1));
+        $this->assertEquals('123456789012345678901234567891', $number->round(0)->toString(0));
+        $this->assertEquals('123456789012345678901234567891', $number->ceil()->toString(0));
+        $this->assertEquals('123456789012345678901234567890', $number->floor()->toString(0));
+
+        $this->assertEquals('0.0000000000009', Number::create('0.00000000000085')->round(13)->toString(13));
+        $this->assertEquals('1.0100', Number::create('1.005')->round(2)->toString());
+    }
+
+    public function testCanInitializeFromExponentialNotation(): void
+    {
+        $this->assertEquals('0.0000100000', Number::create(0.00001)->toString(10));
+        $this->assertEquals('0.0000100000', Number::create('1.0E-5')->toString(10));
+        $this->assertEquals('10000000000000000000000000', Number::create(1.0E+25)->toString(0));
+        $this->assertEquals('-0.0000100000', Number::create(-0.00001)->toString(10));
+
+        // Values that could not be used in any calculation before.
+        $this->assertEquals('0.0000200000', Number::create(0.00001)->multiply(2)->toString(10));
+        $this->assertEquals('1000.0000', Number::create('1e3')->add(0)->toString());
+    }
+
+    public function testLimitingValuesKeepsPrecision(): void
+    {
+        $number = new Number('1.123456789');
+
+        $this->assertEquals('2.987654321', $number->min('2.987654321')->toString(9));
+        $this->assertEquals('0.987654321', $number->max('0.987654321')->toString(9));
+        $this->assertEquals('1.123456789', $number->clamp('0.987654321', '2.987654321')->toString(9));
+        $this->assertEquals('2.987654321', $number->clamp('2.987654321', '3')->toString(9));
+    }
+
+    public function testDivisionFallbackKeepsPrecision(): void
+    {
+        $number = new Number('200');
+
+        $this->assertEquals('0.123456789', $number->divide('0', null, new Number('0.123456789'))->toString(9));
+        $this->assertEquals('0.123456789', $number->divide('0', null, '0.123456789')->toString(9));
+    }
+
+    public function testCannotUseInvalidDivisionFallback(): void
+    {
+        $number = new Number('200');
+
+        $this->expectException(InvalidNumberInputTypeException::class);
+        $number->divide('0', null, []);
     }
 
     public function testCanTraceByParent(): void
